@@ -17,8 +17,10 @@ export class LikesService {
     });
   }
 
-  async findLikesCount() {
-    const result = await this.likeRepository.findAndCountAll();
+  async findLikesCount(postId: number) {
+    const result = await this.likeRepository.findAndCountAll({
+      where: { postId },
+    });
     return result.count;
   }
 

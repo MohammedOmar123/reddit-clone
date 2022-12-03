@@ -11,7 +11,6 @@ import {
 import { LikesService } from './likes.service';
 import { JwtGuard } from '../auth/Guard/jwt.Guard';
 import { GetUser } from 'src/auth/decorator';
-import { User } from '../auth/entity/user.entity';
 
 @Controller('likes')
 export class LikesController {
@@ -20,25 +19,25 @@ export class LikesController {
   @Post(':postId')
   async create(
     @Param('postId', ParseIntPipe) postId: string,
-    @GetUser() user: User,
+    @GetUser() userId: number,
   ) {
-    const result = await this.likesService.create(+postId, user.dataValues.id);
+    const result = await this.likesService.create(+postId, userId);
     if (!result) throw new NotFoundException();
     return result[0];
   }
 
-  @Get()
-  findAll() {
-    return this.likesService.findLikesCount();
+  @Get(':postId')
+  findAll(@Param('postId', ParseIntPipe) postId: string) {
+    return this.likesService.findLikesCount(+postId);
   }
 
   @UseGuards(JwtGuard)
   @Delete(':postId')
   async remove(
     @Param('postId', ParseIntPipe) postId: string,
-    @GetUser() user: User,
+    @GetUser() userId: number,
   ) {
-    await this.likesService.remove(+postId, user.dataValues.id);
+    await this.likesService.remove(+postId, userId);
     return { message: 'Like deleted successfully' };
   }
 }

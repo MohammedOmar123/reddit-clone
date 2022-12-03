@@ -22,8 +22,11 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
   @UseGuards(JwtGuard)
   @Post()
-  async create(@Body() createPostDto: CreatePostDto, @GetUser() user: User) {
-    await this.postService.create(createPostDto, user.dataValues.id);
+  async create(
+    @Body() createPostDto: CreatePostDto,
+    @GetUser() userId: number,
+  ) {
+    await this.postService.create(createPostDto, userId);
     return { message: 'Post created successfully' };
   }
 
