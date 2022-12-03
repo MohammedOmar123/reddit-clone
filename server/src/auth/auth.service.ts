@@ -40,7 +40,9 @@ export class AuthService {
   }
 
   async checkEmail(email: string): Promise<User> {
+    console.log(email);
     const isEmailExist = await this.userRepository.findOne({
+      attributes: ['id', 'email', 'password'],
       where: { email },
     });
     return isEmailExist;
@@ -50,6 +52,7 @@ export class AuthService {
     id: number,
     email: string,
   ): Promise<{ accessToken: string }> {
+    console.log('Create token function');
     const token = await this.jwt.signAsync({ id, email });
     return { accessToken: token };
   }

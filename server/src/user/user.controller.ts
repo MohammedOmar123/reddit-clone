@@ -1,14 +1,17 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
+import { GetUser } from 'src/auth/decorator';
+import { User } from 'src/auth/entity/user.entity';
 import { JwtGuard } from 'src/auth/Guard';
-import { UserServices } from './user.services';
 @Controller('users')
 export class UserController {
-  constructor(private userServices: UserServices) {}
   @UseGuards(JwtGuard)
   @Get('me')
-  GetMe(@Req() req: Request) {
-    return this.userServices.getMe(req.user);
+  // Here we will create a custom decorator that will go in the request object and get that user object
+  // and return it back to us
+  GetMe(@GetUser() user: User) {
+    delete user.dataValues.password;
+    return user;
   }
 }
 // This is a protected route so we need to verify the token when the user sends a request to this endpoint.

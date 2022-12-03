@@ -1,9 +1,19 @@
-import { Column, Model, DataType, Table, HasMany } from 'sequelize-typescript';
-import { Post } from 'src/post/entities/post.entity';
+import {
+  Column,
+  DataType,
+  Model,
+  ForeignKey,
+  BelongsTo,
+  Table,
+  HasMany,
+} from 'sequelize-typescript';
+import { User } from 'src/auth/entity/user.entity';
 import { Comment } from '../../comments/entities/comment.entity';
+import { IPost } from '../../interfaces/';
 import { Like } from '../../likes/entities/like.entity';
+
 @Table
-export class User extends Model<User> {
+export class Post extends Model<IPost> {
   @Column({
     primaryKey: true,
     autoIncrement: true,
@@ -14,33 +24,29 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: false,
   })
-  username: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-    unique: true,
-  })
-  email: string;
+  title: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  password: string;
+  content: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.STRING,
     allowNull: true,
   })
-  bio: string;
+  image: string;
 
   @HasMany(() => Comment)
   comments: Comment[];
-
   @HasMany(() => Like)
   likes: Like[];
 
-  @HasMany(() => Post)
-  posts: Post[];
+  @ForeignKey(() => User)
+  @Column
+  userId: number;
+
+  @BelongsTo(() => User)
+  user: User;
 }
