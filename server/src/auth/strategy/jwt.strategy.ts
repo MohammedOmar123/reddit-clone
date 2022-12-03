@@ -13,15 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: any) {
-    try {
-      const user = await User.findOne({
-        where: { id: payload.id },
-      });
-      delete user.id;
-      return user;
-    } catch (error) {
-      throw new BadRequestException('This is not valid account');
-    }
+    return payload.id;
   }
 }
 

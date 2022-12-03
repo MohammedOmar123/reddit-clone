@@ -41,7 +41,6 @@ export interface IComment
 
 export interface ILike
   extends Model<InferAttributes<IPost>, InferCreationAttributes<IPost>> {
-  id: CreationOptional<number>;
   userId?: ForeignKey<IUser['id']>;
   postId?: ForeignKey<IPost['id']>;
   createdAt?: CreationOptional<Date>;

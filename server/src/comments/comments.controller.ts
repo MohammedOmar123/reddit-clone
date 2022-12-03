@@ -27,11 +27,11 @@ export class CommentsController {
     @Param('postId', ParseIntPipe) postId: string,
     @Body()
     createCommentDto: CreateCommentDto,
-    @GetUser() user: User,
+    @GetUser() userId: number,
   ) {
     const result = await this.commentsService.create(
       createCommentDto,
-      user.dataValues.id,
+      userId,
       +postId,
     );
     if (!result)
@@ -55,12 +55,12 @@ export class CommentsController {
   async update(
     @Param('id') id: string,
     @Body() updateCommentDto: UpdateCommentDto,
-    @GetUser() user: User,
+    @GetUser() userId: number,
   ) {
     const [affectedRows, post] = await this.commentsService.update(
       +id,
       updateCommentDto,
-      user.dataValues.id,
+      userId,
     );
 
     if (!affectedRows) throw new NotFoundException();
@@ -69,8 +69,8 @@ export class CommentsController {
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string, @GetUser() user: User) {
-    const result = await this.commentsService.remove(+id, user.dataValues.id);
+  async remove(@Param('id') id: string, @GetUser() userId: number) {
+    const result = await this.commentsService.remove(+id, userId);
     if (!result) throw new NotFoundException();
     return 'Comment Deleted Successfully';
   }
