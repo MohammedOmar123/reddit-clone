@@ -9,6 +9,7 @@ import {
   UseGuards,
   ParseIntPipe,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -26,13 +27,23 @@ export class PostController {
     @Body() createPostDto: CreatePostDto,
     @GetUser() userId: number,
   ) {
-    await this.postService.create(createPostDto, userId);
+    const result = await this.postService.create(createPostDto, userId);
+    if (!result)
+      throw new ForbiddenException(
+        'You can just add 5 posts per day, Please try again in 24 jours',
+      );
     return { message: 'Post created successfully' };
   }
 
   @Get()
-  async findAll() {
-    return await this.postService.findAll();
+  async getRandomPosts() {
+    return await this.postService.getRandomPosts();
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('myPosts/')
+  async getUserPosts(@GetUser() userId: number) {
+    return await this.postService.getUserPosts(userId);
   }
 
   @Get(':id')
