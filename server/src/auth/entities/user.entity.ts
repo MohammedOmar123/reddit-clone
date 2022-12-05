@@ -1,5 +1,6 @@
 import { Column, Model, DataType, Table, HasMany } from 'sequelize-typescript';
 import { Post } from 'src/post/entities/post.entity';
+import { Replay } from 'src/replies/entities/reply.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Like } from '../../likes/entities/like.entity';
 @Table
@@ -35,12 +36,21 @@ export class User extends Model<User> {
   })
   bio: string;
 
-  @HasMany(() => Comment)
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  image: string;
+
+  @HasMany(() => Comment, { onDelete: 'CASCADE' })
   comments: Comment[];
 
-  @HasMany(() => Like)
+  @HasMany(() => Like, { onDelete: 'CASCADE' })
   likes: Like[];
 
-  @HasMany(() => Post)
+  @HasMany(() => Post, { onDelete: 'CASCADE' })
   posts: Post[];
+
+  @HasMany(() => Replay, { onDelete: 'CASCADE' })
+  replies: Replay[];
 }

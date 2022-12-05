@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { CommentsModule } from './comments/comments.module';
 import { LikesModule } from './likes/likes.module';
+import { RepliesModule } from './replies/replies.module';
 
 @Module({
   // setting isGlobal true will make the Config Module available in all other modules.
@@ -19,6 +20,7 @@ import { LikesModule } from './likes/likes.module';
     PostModule,
     CommentsModule,
     LikesModule,
+    RepliesModule,
   ],
 })
 export class AppModule {}

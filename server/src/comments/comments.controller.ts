@@ -11,11 +11,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
-import { JwtGuard } from '../auth/Guard/jwt.Guard';
-import { GetUser } from '../auth/decorator/get-user.decorator';
-import { User } from 'src/auth/entity/user.entity';
+import { CommentDto } from './dto';
+
+import { JwtGuard } from '../auth/Guard';
+import { GetUser } from '../auth/decorator';
 
 @Controller('comments')
 export class CommentsController {
@@ -26,17 +25,15 @@ export class CommentsController {
   async create(
     @Param('postId', ParseIntPipe) postId: string,
     @Body()
-    createCommentDto: CreateCommentDto,
+    createCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    const result = await this.commentsService.create(
-      createCommentDto,
-      userId,
-      +postId,
-    );
-    if (!result)
+    try {
+      await this.commentsService.create(createCommentDto, userId, +postId);
+      return { message: 'Comment added successfully' };
+    } catch (error) {
       throw new NotFoundException('This Post does not exist anymore');
-    return 'Comment added successfully';
+    }
   }
 
   // Get All comments in the post
@@ -54,17 +51,17 @@ export class CommentsController {
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateCommentDto: UpdateCommentDto,
+    @Body() updateCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    const [affectedRows, post] = await this.commentsService.update(
+    const [affectedRows] = await this.commentsService.update(
       +id,
       updateCommentDto,
       userId,
     );
 
     if (!affectedRows) throw new NotFoundException();
-    return post[0];
+    return { message: 'Comment updated successfully' };
   }
 
   @UseGuards(JwtGuard)
@@ -72,6 +69,6 @@ export class CommentsController {
   async remove(@Param('id') id: string, @GetUser() userId: number) {
     const result = await this.commentsService.remove(+id, userId);
     if (!result) throw new NotFoundException();
-    return 'Comment Deleted Successfully';
+    return { message: 'Comment deleted successfully' };
   }
 }

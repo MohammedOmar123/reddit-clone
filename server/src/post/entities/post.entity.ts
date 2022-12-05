@@ -7,10 +7,10 @@ import {
   Table,
   HasMany,
 } from 'sequelize-typescript';
-import { User } from 'src/auth/entity/user.entity';
-import { Comment } from '../../comments/entities/comment.entity';
+import { User } from 'src/auth/entities';
+import { Comment } from '../../comments/entities';
 import { IPost } from '../../interfaces/';
-import { Like } from '../../likes/entities/like.entity';
+import { Like } from '../../likes/entities';
 
 @Table
 export class Post extends Model<IPost> {
@@ -38,9 +38,10 @@ export class Post extends Model<IPost> {
   })
   image: string;
 
-  @HasMany(() => Comment)
+  @HasMany(() => Comment, { onDelete: 'CASCADE' })
   comments: Comment[];
-  @HasMany(() => Like)
+
+  @HasMany(() => Like, { onDelete: 'CASCADE' })
   likes: Like[];
 
   @ForeignKey(() => User)

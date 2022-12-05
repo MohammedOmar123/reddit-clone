@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
-import { Comment } from './entities/comment.entity';
+import { CommentDto } from './dto';
+import { Comment } from './entities/';
+import { User } from '../auth/entities';
 import { PostService } from '../post/post.service';
-
 @Injectable()
 export class CommentsService {
   constructor(
@@ -11,14 +10,10 @@ export class CommentsService {
     private postService: PostService,
   ) {}
 
-  async create(
-    createCommentDto: CreateCommentDto,
-    userId: number,
-    postId: number,
-  ) {
+  async create(createCommentDto: CommentDto, userId: number, postId: number) {
     const { content } = createCommentDto;
     const post = await this.postService.findOne(postId);
-    if (!post) return null;
+    if (!post) throw new Error();
     return await this.commentRepository.create({
       content,
       postId,
@@ -30,6 +25,11 @@ export class CommentsService {
     return await this.commentRepository.findAll({
       where: { postId },
       order: [['createdAt', 'ASC']],
+      include: {
+        model: User,
+        required: true,
+        attributes: ['id', 'username', 'image'],
+      },
     });
   }
 
@@ -39,11 +39,15 @@ export class CommentsService {
     });
   }
 
-  async update(id: number, updateCommentDto: UpdateCommentDto, userId: number) {
+  async findOneById(id: number) {
+    return await this.commentRepository.findByPk(id);
+  }
+
+  async update(id: number, updateCommentDto: CommentDto, userId: number) {
     const { content } = updateCommentDto;
     return await this.commentRepository.update(
       { content },
-      { where: { id, userId }, returning: true },
+      { where: { id, userId } },
     );
   }
 

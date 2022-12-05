@@ -5,10 +5,12 @@ import {
   DataType,
   ForeignKey,
   Model,
+  HasMany,
 } from 'sequelize-typescript';
-import { Post } from 'src/post/entities/post.entity';
-import { User } from 'src/auth/entity/user.entity';
+import { Post } from 'src/post/entities';
+import { User } from 'src/auth/entities';
 import { IComment } from '../../interfaces/';
+import { Replay } from '../../replies/entities';
 @Table
 export class Comment extends Model<IComment> {
   @Column({
@@ -22,6 +24,8 @@ export class Comment extends Model<IComment> {
     allowNull: false,
   })
   content: string;
+  @HasMany(() => Replay, { onDelete: 'CASCADE' })
+  replies: Replay[];
 
   @ForeignKey(() => User)
   @Column

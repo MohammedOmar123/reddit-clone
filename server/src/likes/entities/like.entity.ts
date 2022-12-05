@@ -5,8 +5,8 @@ import {
   BelongsTo,
   Model,
 } from 'sequelize-typescript';
-import { User } from '../../auth/entity/user.entity';
-import { Post } from '../../post/entities/post.entity';
+import { User } from '../../auth/entities';
+import { Post } from '../../post/entities';
 import { ILike } from 'src/interfaces';
 
 @Table
