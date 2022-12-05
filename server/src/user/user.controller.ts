@@ -1,7 +1,5 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorator';
-import { User } from 'src/auth/entity/user.entity';
 import { JwtGuard } from 'src/auth/Guard';
 import { UserServices } from './user.service';
 @Controller('users')
@@ -11,7 +9,7 @@ export class UserController {
   @Get('me')
   // Here we will create a custom decorator that will go in the request object and get that user object
   // and return it back to us
-  GetMe(@GetUser() id: number) {
+  async GetMe(@GetUser() id: number) {
     return this.userServices.getMe(id);
   }
 }

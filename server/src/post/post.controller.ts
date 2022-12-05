@@ -12,12 +12,10 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { JwtGuard } from '../auth/Guard/jwt.Guard';
+import { CreatePostDto } from './dto';
+import { UpdatePostDto } from './dto';
+import { JwtGuard } from '../auth/Guard';
 import { GetUser } from 'src/auth/decorator';
-import { User } from 'src/auth/entity/user.entity';
-
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -30,7 +28,7 @@ export class PostController {
     const result = await this.postService.create(createPostDto, userId);
     if (!result)
       throw new ForbiddenException(
-        'You can just add 5 posts per day, Please try again in 24 jours',
+        'You can just add 5 posts per day, Please try again in 24 hours',
       );
     return { message: 'Post created successfully' };
   }
@@ -47,8 +45,8 @@ export class PostController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: string) {
-    const post = await this.postService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const post = await this.postService.findOne(id);
     if (!post) throw new NotFoundException('This post does not exist anymore');
     return post;
   }
@@ -56,22 +54,27 @@ export class PostController {
   @UseGuards(JwtGuard)
   @Patch(':id')
   async update(
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
+    @GetUser() userId: number,
   ) {
-    const [affectedRows, result] = await this.postService.update(
+    const [affectedRows] = await this.postService.update(
       +id,
       updatePostDto,
+      userId,
     );
 
     if (!affectedRows) throw new NotFoundException();
-    return result[0];
+    return { message: 'Post updated Successfully' };
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: string, @GetUser() user: User) {
-    const affectedRows = await this.postService.remove(+id, user.dataValues.id);
+  async remove(
+    @Param('id', ParseIntPipe) id: number,
+    @GetUser() userId: number,
+  ) {
+    const affectedRows = await this.postService.remove(id, userId);
     if (!affectedRows) throw new NotFoundException();
     return { message: 'Post deleted Successfully' };
   }

@@ -46,3 +46,13 @@ export interface ILike
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;
 }
+export interface IReplay
+  extends Model<InferAttributes<IPost>, InferCreationAttributes<IPost>> {
+  id: CreationOptional<number>;
+  content: string;
+  userId?: ForeignKey<IUser['id']>;
+  commentId?: ForeignKey<IComment['id']>;
+  replayId?: ForeignKey<IReplay['id']>;
+  createdAt?: CreationOptional<Date>;
+  updatedAt?: CreationOptional<Date>;
+}

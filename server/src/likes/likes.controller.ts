@@ -9,7 +9,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { LikesService } from './likes.service';
-import { JwtGuard } from '../auth/Guard/jwt.Guard';
+import { JwtGuard } from '../auth/Guard';
 import { GetUser } from 'src/auth/decorator';
 
 @Controller('likes')

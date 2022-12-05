@@ -1,4 +1,4 @@
-import { Like } from './entities/like.entity';
+import { Like } from './entities';
 export const likeProvider = [
   {
     provide: 'LIKE_REPOSITORY',
