@@ -5,7 +5,7 @@ import {
   BelongsTo,
   Model,
 } from 'sequelize-typescript';
-import { User } from '../../auth/entities';
+import { User } from '../../auth/entity';
 import { Post } from '../../post/entities';
 import { ILike } from 'src/interfaces';
 

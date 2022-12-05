@@ -3,7 +3,7 @@ import { CreateReplyDto } from './dto';
 import { UpdateReplyDto } from './dto';
 import { Replay } from './entities/';
 import { CommentsService } from '../comments/comments.service';
-import { User } from '../auth/entities';
+import { User } from '../auth/entity';
 import { Op } from 'sequelize';
 
 @Injectable()

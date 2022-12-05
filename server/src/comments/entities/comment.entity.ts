@@ -8,7 +8,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { Post } from 'src/post/entities';
-import { User } from 'src/auth/entities';
+import { User } from 'src/auth/entity';
 import { IComment } from '../../interfaces/';
 import { Replay } from '../../replies/entities';
 @Table

@@ -7,7 +7,7 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { User } from 'src/auth/entities';
+import { User } from 'src/auth/entity';
 import { Comment } from '../../comments/entities';
 import { IReplay } from '../../../src/interfaces';
 

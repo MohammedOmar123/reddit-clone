@@ -7,7 +7,7 @@ import {
   Table,
   HasMany,
 } from 'sequelize-typescript';
-import { User } from 'src/auth/entities';
+import { User } from 'src/auth/entity';
 import { Comment } from '../../comments/entities';
 import { IPost } from '../../interfaces/';
 import { Like } from '../../likes/entities';

@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { CreatePostDto } from './dto';
 import { UpdatePostDto } from './dto';
 import { Post } from './entities';
-import { User } from '../auth/entities';
+import { User } from '../auth/entity';
 
 @Injectable()
 export class PostService {

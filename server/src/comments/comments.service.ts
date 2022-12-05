@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CommentDto } from './dto';
 import { Comment } from './entities/';
-import { User } from '../auth/entities';
+import { User } from '../auth/entity';
 import { PostService } from '../post/post.service';
 @Injectable()
 export class CommentsService {

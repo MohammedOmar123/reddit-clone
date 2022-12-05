@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { databaseConfig } from './database.config';
-import { User } from '../auth/entities';
+import { User } from '../auth/entity';
 import { Post } from '../post/entities';
 import { Comment } from '../comments/entities';
 import { Like } from '../likes/entities';
