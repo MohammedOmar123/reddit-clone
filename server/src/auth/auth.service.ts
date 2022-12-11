@@ -2,12 +2,14 @@ import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { User } from './entity/user.entity';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { USER_REPOSITORY } from 'src/constants';
+import { LoginDto } from './dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('USER_REPOSITORY') private userRepository: typeof User,
-    private jwt: JwtService, // We injected by dependency injection from JWTModule
+    @Inject(USER_REPOSITORY) private userRepository: typeof User,
+    private jwt: JwtService, // We injected jwt service by using dependency injection from JWTModule
   ) {}
 
   async signup(user: any): Promise<{ accessToken: string }> {
@@ -25,7 +27,7 @@ export class AuthService {
     return this.createToken(result.id, result.email);
   }
 
-  async login(user: any): Promise<{ accessToken: string }> {
+  async login(user: LoginDto): Promise<{ accessToken: string }> {
     const result = await this.checkEmail(user.email);
 
     if (!result) throw new BadRequestException('Invalid email');
@@ -40,12 +42,11 @@ export class AuthService {
   }
 
   async checkEmail(email: string): Promise<User> {
-    console.log(email);
-    const isEmailExist = await this.userRepository.findOne({
+    const user = await this.userRepository.findOne({
       attributes: ['id', 'email', 'password'],
       where: { email },
     });
-    return isEmailExist;
+    return user;
   }
 
   async createToken(

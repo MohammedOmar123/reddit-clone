@@ -8,7 +8,7 @@ import { JwtStrategy } from './strategy';
 @Module({
   imports: [JwtModule.register({ secret: process.env.JWTKEY })],
   controllers: [UserController],
-  providers: [AuthService, ...usersProviders, JwtStrategy],
+  providers: [AuthService, usersProviders, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

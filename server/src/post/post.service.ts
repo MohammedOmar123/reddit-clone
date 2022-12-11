@@ -1,15 +1,15 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, ForbiddenException } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
-import { CreatePostDto } from './dto';
-import { UpdatePostDto } from './dto';
+import { CreatePostDto, UpdatePostDto } from './dto';
 import { Post } from './entities';
 import { User } from '../auth/entity';
+import { POST_REPOSITORY, USER_REPOSITORY } from 'src/constants';
 
 @Injectable()
 export class PostService {
   constructor(
-    @Inject('Post_REPOSITORY') private postRepository: typeof Post,
-    @Inject('USER_REPOSITORY') private userRepository: typeof User,
+    @Inject(POST_REPOSITORY) private postRepository: typeof Post,
+    @Inject(USER_REPOSITORY) private userRepository: typeof User,
   ) {}
 
   async create(createPostDto: CreatePostDto, userId: number) {
@@ -17,7 +17,9 @@ export class PostService {
 
     // Get the difference time between the first and the fifth post
     if (userPosts.length > 4 && !this.getDiffTime(userPosts[4].createdAt))
-      return null;
+      throw new ForbiddenException(
+        'You can just add 5 posts per day, Please try again in 24 hours',
+      );
 
     const { title, content, image } = createPostDto;
 
@@ -69,6 +71,7 @@ export class PostService {
       include: {
         model: this.userRepository,
         attributes: ['id', 'username', 'image'],
+        required: true,
       },
     });
   }

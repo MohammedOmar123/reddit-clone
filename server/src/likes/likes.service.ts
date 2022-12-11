@@ -1,16 +1,17 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Like } from './entities';
 import { PostService } from '../post/post.service';
+import { LIKE_REPOSITORY } from 'src/constants';
 
 @Injectable()
 export class LikesService {
   constructor(
-    @Inject('LIKE_REPOSITORY') private likeRepository: typeof Like,
+    @Inject(LIKE_REPOSITORY) private likeRepository: typeof Like,
     private postService: PostService,
   ) {}
   async create(postId: number, userId: number) {
     const post = await this.postService.findOne(postId);
-    if (!post) return null;
+    if (!post) throw new NotFoundException();
     return await this.likeRepository.upsert({
       postId,
       userId,
@@ -18,13 +19,12 @@ export class LikesService {
   }
 
   async findLikesCount(postId: number) {
-    const result = await this.likeRepository.findAndCountAll({
+    return this.likeRepository.count({
       where: { postId },
     });
-    return result.count;
   }
 
-  remove(postId: number, userId: number) {
+  async remove(postId: number, userId: number) {
     return this.likeRepository.destroy({ where: { postId, userId } });
   }
 }
