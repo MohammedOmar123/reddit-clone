@@ -1,0 +1,33 @@
+.navbar-appBar {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+}
+.navbar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+}
+
+.logo-container {
+  display: flex;
+  gap: 7px;
+}
+
+.navbar-logo{
+  width: 35px;
+}
+/* search input */
+.MuiOutlinedInput-root {
+height: 30px;
+width: 500px;
+}
+
+.MuiOutlinedInput-root ::placeholder {
+font-family: cursive;
+}
+
+.navbar-buttons-container {
+ display: flex;
+  gap: 20px;
+}
