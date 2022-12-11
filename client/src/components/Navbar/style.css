@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&family=Inter:wght@300;400;500;600;700;800;900&family=Raleway:ital,wght@0,300;0,600;1,400;1,500&family=Roboto:ital,wght@0,300;1,300&family=Work+Sans:wght@200;300;400;500;600;700;800&display=swap');
+.navbar-appBar {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+}
+.navbar-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+}
+
+.logo-container {
+  display: flex;
+  gap: 7px;
+}
+
+.navbar-logo{
+  width: 35px;
+}
+/* search input */
+.MuiOutlinedInput-root {
+height: 30px;
+width: 500px;
+}
+
+.MuiOutlinedInput-root ::placeholder {
+font-family: cursive;
+}
+
+.navbar-buttons-container {
+ display: flex;
+  gap: 20px;
+}
