@@ -25,11 +25,8 @@ export class PostController {
     @Body() createPostDto: CreatePostDto,
     @GetUser() userId: number,
   ) {
-    const result = await this.postService.create(createPostDto, userId);
-    if (!result)
-      throw new ForbiddenException(
-        'You can just add 5 posts per day, Please try again in 24 hours',
-      );
+    await this.postService.create(createPostDto, userId);
+
     return { message: 'Post created successfully' };
   }
 

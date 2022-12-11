@@ -28,12 +28,8 @@ export class CommentsController {
     createCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    try {
-      await this.commentsService.create(createCommentDto, userId, +postId);
-      return { message: 'Comment added successfully' };
-    } catch (error) {
-      throw new NotFoundException('This Post does not exist anymore');
-    }
+    await this.commentsService.create(createCommentDto, userId, +postId);
+    return { message: 'Comment added successfully' };
   }
 
   // Get All comments in the post

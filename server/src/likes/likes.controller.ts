@@ -6,7 +6,6 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
-  NotFoundException,
 } from '@nestjs/common';
 import { LikesService } from './likes.service';
 import { JwtGuard } from '../auth/Guard';
@@ -18,17 +17,16 @@ export class LikesController {
   @UseGuards(JwtGuard)
   @Post(':postId')
   async create(
-    @Param('postId', ParseIntPipe) postId: string,
+    @Param('postId', ParseIntPipe) postId: number,
     @GetUser() userId: number,
   ) {
-    const result = await this.likesService.create(+postId, userId);
-    if (!result) throw new NotFoundException();
-    return result[0];
+    await this.likesService.create(postId, userId);
+    return { message: 'like added successfully' };
   }
 
   @Get(':postId')
-  findAll(@Param('postId', ParseIntPipe) postId: string) {
-    return this.likesService.findLikesCount(+postId);
+  async findLikesCount(@Param('postId', ParseIntPipe) postId: number) {
+    return { likes: await this.likesService.findLikesCount(postId) };
   }
 
   @UseGuards(JwtGuard)

@@ -1,7 +1,7 @@
 import { Comment } from './entities';
-export const commentProvider = [
-  {
-    provide: 'Comment_REPOSITORY',
-    useValue: Comment,
-  },
-];
+import { COMMENT_REPOSITORY } from 'src/constants';
+
+export const commentProvider = {
+  provide: COMMENT_REPOSITORY,
+  useValue: Comment,
+};

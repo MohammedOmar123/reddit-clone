@@ -7,6 +7,6 @@ import { PostModule } from '../post/post.module';
 @Module({
   imports: [PostModule],
   controllers: [LikesController],
-  providers: [LikesService, ...likeProvider],
+  providers: [LikesService, likeProvider],
 })
 export class LikesModule {}

@@ -1,4 +1,4 @@
-import { Length, IsNotEmpty, IsEmail, IsEnum } from 'class-validator';
+import { Length, IsNotEmpty, IsEmail } from 'class-validator';
 // https://docs.nestjs.com/pipes#class-validator
 
 export class LoginDto {
