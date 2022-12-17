@@ -28,8 +28,7 @@ export class CommentsController {
     createCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    await this.commentsService.create(createCommentDto, userId, +postId);
-    return { message: 'Comment added successfully' };
+    return await this.commentsService.create(createCommentDto, userId, +postId);
   }
 
   // Get All comments in the post
@@ -50,14 +49,7 @@ export class CommentsController {
     @Body() updateCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    const [affectedRows] = await this.commentsService.update(
-      +id,
-      updateCommentDto,
-      userId,
-    );
-
-    if (!affectedRows) throw new NotFoundException();
-    return { message: 'Comment updated successfully' };
+    return await this.commentsService.update(+id, updateCommentDto, userId);
   }
 
   @UseGuards(JwtGuard)

@@ -4,7 +4,8 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { USER_REPOSITORY } from 'src/constants';
 import { LoginDto, signupDto } from './dto';
-
+import { MESSAGES } from '../constants';
+import { signupValidation, loginValidation } from './validation';
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,8 +14,11 @@ export class AuthService {
   ) {}
 
   async signup(user: signupDto): Promise<{ accessToken: string }> {
-    if (user.confirmPassword !== user.password)
-      throw new BadRequestException('Passwords are not matched');
+    try {
+      await signupValidation(user);
+    } catch (error) {
+      throw new BadRequestException(error.details[0].message);
+    }
 
     const isEmailExist = await this.checkEmail(user.email);
     if (isEmailExist)
@@ -33,14 +37,20 @@ export class AuthService {
   }
 
   async login(user: LoginDto): Promise<{ accessToken: string }> {
+    try {
+      await loginValidation(user);
+    } catch (error) {
+      throw new BadRequestException(error.details[0].message);
+    }
     const result = await this.checkEmail(user.email);
-    if (!result) throw new BadRequestException('Invalid email');
+    if (!result) throw new BadRequestException(MESSAGES.FAILED_LOGIN);
 
     const isPasswordMatched = await bcrypt.compare(
       user.password,
       result.password,
     );
-    if (!isPasswordMatched) throw new BadRequestException('Invalid Password');
+    if (!isPasswordMatched)
+      throw new BadRequestException(MESSAGES.FAILED_LOGIN);
 
     return this.createToken(result.id, result.email);
   }
