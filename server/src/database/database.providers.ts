@@ -3,7 +3,7 @@ import { databaseConfig } from './database.config';
 import { User } from '../auth/entity';
 import { Post } from '../post/entities';
 import { Comment } from '../comments/entities';
-import { Like } from '../likes/entities';
+import { Vote } from '../votes/entities';
 import { Replay } from '../replies/entities';
 import { SEQUELIZE } from 'src/constants';
 
@@ -26,7 +26,7 @@ export const databaseProviders = {
         databaseConfig.development;
     }
     const sequelize = new Sequelize(config);
-    sequelize.addModels([User, Post, Comment, Like, Replay]);
+    sequelize.addModels([User, Post, Comment, Vote, Replay]);
     await sequelize.sync();
     return sequelize;
   },

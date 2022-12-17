@@ -1,30 +1,31 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Like } from './entities';
+import { Vote } from './entities';
 import { PostService } from '../post/post.service';
-import { LIKE_REPOSITORY } from 'src/constants';
+import { VOTE_REPOSITORY } from 'src/constants';
 
 @Injectable()
-export class LikesService {
+export class VoteService {
   constructor(
-    @Inject(LIKE_REPOSITORY) private likeRepository: typeof Like,
+    @Inject(VOTE_REPOSITORY) private voteRepository: typeof Vote,
     private postService: PostService,
   ) {}
+
   async create(postId: number, userId: number) {
     const post = await this.postService.findOne(postId);
     if (!post) throw new NotFoundException();
-    return await this.likeRepository.upsert({
+    return await this.voteRepository.upsert({
       postId,
       userId,
     });
   }
 
   async findLikesCount(postId: number) {
-    return this.likeRepository.count({
+    return this.voteRepository.count({
       where: { postId },
     });
   }
 
   async remove(postId: number, userId: number) {
-    return this.likeRepository.destroy({ where: { postId, userId } });
+    return this.voteRepository.destroy({ where: { postId, userId } });
   }
 }

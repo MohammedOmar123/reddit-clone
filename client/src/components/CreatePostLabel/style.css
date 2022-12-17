@@ -1,0 +1,13 @@
+.create-post-label-box {
+  display: flex;
+  flex-direction: row;
+  border:1px solid silver;
+  border-radius: 10px;
+  margin-top: 20px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 3px;
+  background-color: white;
+}

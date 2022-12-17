@@ -1,12 +1,11 @@
-.navbar-appBar {
-  height: 50px;
+.navbar-appBar {  height: 50px;
   display: flex;
   justify-content: center;
 }
 .navbar-toolbar {
   display: flex;
   justify-content: space-between;
-  align-items:center;
+  align-items: center;
 }
 
 .logo-container {
@@ -14,20 +13,26 @@
   gap: 7px;
 }
 
-.navbar-logo{
+.navbar-logo {
   width: 35px;
 }
+
+.reddit {
+  font-size: 25px !important;
+  font-family: cursive !important;
+}
+
 /* search input */
 .MuiOutlinedInput-root {
-height: 30px;
-width: 500px;
+  height: 30px;
+  width: 500px;
 }
 
 .MuiOutlinedInput-root ::placeholder {
-font-family: cursive;
+  font-family: cursive;
 }
 
 .navbar-buttons-container {
- display: flex;
+  display: flex;
   gap: 20px;
 }

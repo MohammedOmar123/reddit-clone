@@ -1,7 +1,10 @@
 import { FC } from 'react';
+import PostList from '../components/Post/PostList';
 
 const HomePage: FC = () => (
-  <div>HomePage</div>
+  <div>
+    <PostList />
+  </div>
 );
 
 export default HomePage;

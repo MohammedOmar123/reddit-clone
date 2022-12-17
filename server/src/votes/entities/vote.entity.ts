@@ -4,13 +4,14 @@ import {
   ForeignKey,
   BelongsTo,
   Model,
+  DataType,
 } from 'sequelize-typescript';
 import { User } from '../../auth/entity';
 import { Post } from '../../post/entities';
-import { ILike } from 'src/interfaces';
+import { IVote } from 'src/interfaces';
 
 @Table
-export class Like extends Model<ILike> {
+export class Vote extends Model<IVote> {
   @ForeignKey(() => User)
   @Column({
     primaryKey: true,
@@ -24,6 +25,13 @@ export class Like extends Model<ILike> {
     primaryKey: true,
   })
   postId: number;
+
   @BelongsTo(() => Post)
   post: Post;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  vote: number;
 }

@@ -10,7 +10,7 @@ import {
 import { User } from 'src/auth/entity';
 import { Comment } from '../../comments/entities';
 import { IPost } from '../../interfaces/';
-import { Like } from '../../likes/entities';
+import { Vote } from '../../votes/entities';
 
 @Table
 export class Post extends Model<IPost> {
@@ -38,11 +38,11 @@ export class Post extends Model<IPost> {
   })
   image: string;
 
-  @HasMany(() => Comment, { onDelete: 'CASCADE' })
+  @HasMany(() => Comment)
   comments: Comment[];
 
-  @HasMany(() => Like, { onDelete: 'CASCADE' })
-  likes: Like[];
+  @HasMany(() => Vote)
+  likes: Vote[];
 
   @ForeignKey(() => User)
   @Column

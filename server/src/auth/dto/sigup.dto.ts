@@ -1,4 +1,4 @@
-import { Length, IsString, IsNotEmpty, IsEmail, IsEnum } from 'class-validator';
+import { Length, IsString, IsNotEmpty, IsEmail } from 'class-validator';
 // https://docs.nestjs.com/pipes#class-validator
 
 export class signupDto {
@@ -14,8 +14,11 @@ export class signupDto {
   @Length(2, 30)
   password: string;
 
-  @IsString()
   @IsNotEmpty()
-  @IsEnum({ male: 'male', female: 'female' })
-  gender: 'male' | 'female';
+  @Length(2, 30)
+  confirmPassword: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // @IsEnum({ male: 'male', female: 'female' })
+  // gender: 'male' | 'female';
 }

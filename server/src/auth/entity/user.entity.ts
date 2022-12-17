@@ -2,10 +2,11 @@ import { Column, Model, DataType, Table, HasMany } from 'sequelize-typescript';
 import { Post } from 'src/post/entities/post.entity';
 import { Replay } from 'src/replies/entities/reply.entity';
 import { Comment } from '../../comments/entities/comment.entity';
-import { Like } from '../../likes/entities/like.entity';
+import { Vote } from '../../votes/entities';
 @Table
 export class User extends Model<User> {
   @Column({
+    type: DataType.BIGINT,
     primaryKey: true,
     autoIncrement: true,
   })
@@ -42,15 +43,15 @@ export class User extends Model<User> {
   })
   image: string;
 
-  @HasMany(() => Comment, { onDelete: 'CASCADE' })
+  @HasMany(() => Comment)
   comments: Comment[];
 
-  @HasMany(() => Like, { onDelete: 'CASCADE' })
-  likes: Like[];
+  @HasMany(() => Vote)
+  votes: Vote[];
 
-  @HasMany(() => Post, { onDelete: 'CASCADE' })
+  @HasMany(() => Post)
   posts: Post[];
 
-  @HasMany(() => Replay, { onDelete: 'CASCADE' })
+  @HasMany(() => Replay)
   replies: Replay[];
 }
