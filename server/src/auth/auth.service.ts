@@ -2,9 +2,9 @@ import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { User } from './entity';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { USER_REPOSITORY } from 'src/constants';
+import { USER_REPOSITORY } from 'src/core/constants';
 import { LoginDto, signupDto } from './dto';
-import { MESSAGES } from '../constants';
+import { MESSAGES } from '../core/constants';
 import { signupValidation, loginValidation } from './validation';
 @Injectable()
 export class AuthService {

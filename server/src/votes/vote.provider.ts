@@ -1,5 +1,5 @@
 import { Vote } from './entities';
-import { VOTE_REPOSITORY } from 'src/constants';
+import { VOTE_REPOSITORY } from 'src/core/constants';
 
 export const voteProvider = {
   provide: VOTE_REPOSITORY,

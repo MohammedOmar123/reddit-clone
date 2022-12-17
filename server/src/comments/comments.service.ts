@@ -3,8 +3,8 @@ import { CommentDto } from './dto';
 import { Comment } from './entities/';
 import { User } from '../auth/entity';
 import { PostService } from '../post/post.service';
-import { COMMENT_REPOSITORY } from 'src/constants';
-import { USER_REPOSITORY, MESSAGES } from '../constants';
+import { COMMENT_REPOSITORY } from 'src/core/constants';
+import { USER_REPOSITORY, MESSAGES } from '../core/constants';
 @Injectable()
 export class CommentsService {
   constructor(
@@ -64,7 +64,10 @@ export class CommentsService {
   }
 
   async remove(id: number, userId: number) {
-    await this.commentRepository.destroy({ where: { id, userId } });
+    const affectedRows = await this.commentRepository.destroy({
+      where: { id, userId },
+    });
+    if (!affectedRows) throw new NotFoundException();
     return { message: MESSAGES.SUCCESS_DELETED };
   }
 }

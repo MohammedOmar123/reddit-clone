@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { signupDto } from '../dto/sigup.dto';
 import { LoginDto } from '../dto/login.dto';
-import { MESSAGES } from 'src/constants';
+import { MESSAGES } from 'src/core/constants';
 
 export const signupValidation = (user: signupDto) => {
   const schema = Joi.object({
