@@ -23,34 +23,34 @@ export interface IPost
   id: CreationOptional<number>;
   title: string;
   content: string;
-  userId?: ForeignKey<IUser['id']>;
+  userId: ForeignKey<IUser['id']>;
   image?: string;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;
 }
 
 export interface IComment
-  extends Model<InferAttributes<IPost>, InferCreationAttributes<IPost>> {
+  extends Model<InferAttributes<IComment>, InferCreationAttributes<IComment>> {
   id: CreationOptional<number>;
   content: string;
-  userId?: ForeignKey<IUser['id']>;
-  postId?: ForeignKey<IPost['id']>;
+  userId: ForeignKey<IUser['id']>;
+  postId: ForeignKey<IPost['id']>;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;
 }
 
-export interface ILike
-  extends Model<InferAttributes<IPost>, InferCreationAttributes<IPost>> {
-  userId?: ForeignKey<IUser['id']>;
-  postId?: ForeignKey<IPost['id']>;
+export interface IVote
+  extends Model<InferAttributes<IVote>, InferCreationAttributes<IVote>> {
+  userId: ForeignKey<IUser['id']>;
+  postId: ForeignKey<IPost['id']>;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;
 }
 export interface IReplay
-  extends Model<InferAttributes<IPost>, InferCreationAttributes<IPost>> {
+  extends Model<InferAttributes<IReplay>, InferCreationAttributes<IReplay>> {
   id: CreationOptional<number>;
   content: string;
-  userId?: ForeignKey<IUser['id']>;
+  userId: ForeignKey<IUser['id']>;
   commentId?: ForeignKey<IComment['id']>;
   replayId?: ForeignKey<IReplay['id']>;
   createdAt?: CreationOptional<Date>;

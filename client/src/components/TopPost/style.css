@@ -1,0 +1,18 @@
+.top-post-container {
+  margin-top: 40px;
+  display:flex;
+  justify-content: flex-start;
+  width: 400px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-posts-list {
+  height: fit-content;
+  margin-top: 20px !important;
+}
+
+.divider { 
+  width: 100%;
+  margin-left: 0px;
+}

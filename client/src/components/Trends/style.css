@@ -1,0 +1,34 @@
+.trends-container {
+  width: 75%;
+  height: 110px;
+  border: 1px solid sliver;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.trends-banner {
+  width: 19.7%;
+  position: absolute;
+}
+
+.trends-box {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+  padding-left: 10px;
+}
+
+.trends-box img {
+  width: 40px;
+  height: 68px;
+  position: 'relative';
+  top: 0px;
+}
+
+.trends-box p {
+  margin-top: 30px;
+  color: #d93a00;
+  font-family: cursive;
+  font-weight : 700;
+} 

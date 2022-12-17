@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
 import { CommentsModule } from './comments/comments.module';
-import { LikesModule } from './likes/likes.module';
+import { VoteModule } from './votes/vote.module';
 import { RepliesModule } from './replies/replies.module';
 
 @Module({
@@ -19,7 +19,7 @@ import { RepliesModule } from './replies/replies.module';
     AuthModule,
     PostModule,
     CommentsModule,
-    LikesModule,
+    VoteModule,
     RepliesModule,
   ],
 })
