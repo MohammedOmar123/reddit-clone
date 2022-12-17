@@ -14,11 +14,7 @@ export class signupDto {
   @Length(2, 30)
   password: string;
 
-  @IsNotEmpty()
+  @IsString()
   @Length(2, 30)
   confirmPassword: string;
-  // @IsString()
-  // @IsNotEmpty()
-  // @IsEnum({ male: 'male', female: 'female' })
-  // gender: 'male' | 'female';
 }
