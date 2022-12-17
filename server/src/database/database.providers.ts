@@ -5,7 +5,7 @@ import { Post } from '../post/entities';
 import { Comment } from '../comments/entities';
 import { Vote } from '../votes/entities';
 import { Replay } from '../replies/entities';
-import { SEQUELIZE } from 'src/constants';
+import { SEQUELIZE } from 'src/core/constants';
 
 export const databaseProviders = {
   provide: SEQUELIZE,
@@ -27,7 +27,7 @@ export const databaseProviders = {
     }
     const sequelize = new Sequelize(config);
     sequelize.addModels([User, Post, Comment, Vote, Replay]);
-    await sequelize.sync();
+    await sequelize.sync({ force: false });
     return sequelize;
   },
 };

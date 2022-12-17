@@ -3,8 +3,8 @@ import { CommentDto } from './dto';
 import { Comment } from './entities/';
 import { User } from '../auth/entity';
 import { PostService } from '../post/post.service';
-import { COMMENT_REPOSITORY } from 'src/constants';
-import { USER_REPOSITORY } from '../constants';
+import { COMMENT_REPOSITORY } from 'src/core/constants';
+import { USER_REPOSITORY, MESSAGES } from '../core/constants';
 @Injectable()
 export class CommentsService {
   constructor(
@@ -17,15 +17,19 @@ export class CommentsService {
     const { content } = createCommentDto;
     const post = await this.postService.findOne(postId);
     if (!post) throw new NotFoundException();
-    return await this.commentRepository.create({
-      content,
-      postId,
-      userId,
-    });
+    const data = await this.commentRepository.create(
+      {
+        content,
+        postId,
+        userId,
+      },
+      { returning: true },
+    );
+    return { message: MESSAGES.SUCCESS_ADD, data };
   }
 
   async findAll(postId: number) {
-    return await this.commentRepository.findAll({
+    const comments = await this.commentRepository.findAll({
       where: { postId },
       order: [['createdAt', 'ASC']],
       include: {
@@ -34,27 +38,36 @@ export class CommentsService {
         attributes: ['id', 'username', 'image'],
       },
     });
+    return comments;
   }
 
   async findOne(postId: number) {
-    return await this.commentRepository.findOne({
+    const comment = await this.commentRepository.findOne({
       where: { postId },
     });
+    return comment;
   }
 
   async findOneById(id: number) {
-    return await this.commentRepository.findByPk(id);
+    const comment = await this.commentRepository.findByPk(id);
+    return comment;
   }
 
   async update(id: number, updateCommentDto: CommentDto, userId: number) {
     const { content } = updateCommentDto;
-    return await this.commentRepository.update(
+    const [affectedRows, [comment]] = await this.commentRepository.update(
       { content },
-      { where: { id, userId } },
+      { where: { id, userId }, returning: ['content'] },
     );
+    if (!affectedRows) throw new NotFoundException();
+    return { message: MESSAGES.SUCCESS_UPDATED, comment };
   }
 
   async remove(id: number, userId: number) {
-    return this.commentRepository.destroy({ where: { id, userId } });
+    const affectedRows = await this.commentRepository.destroy({
+      where: { id, userId },
+    });
+    if (!affectedRows) throw new NotFoundException();
+    return { message: MESSAGES.SUCCESS_DELETED };
   }
 }
