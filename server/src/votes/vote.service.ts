@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Vote } from './entities';
 import { PostService } from '../post/post.service';
-import { VOTE_REPOSITORY } from 'src/constants';
+import { VOTE_REPOSITORY } from 'src/core/constants';
 
 @Injectable()
 export class VoteService {
