@@ -15,6 +15,7 @@ import { Vote } from '../../votes/entities';
 @Table
 export class Post extends Model<IPost> {
   @Column({
+    type: DataType.BIGINT,
     primaryKey: true,
     autoIncrement: true,
   })
