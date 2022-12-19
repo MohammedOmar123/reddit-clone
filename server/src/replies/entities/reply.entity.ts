@@ -14,10 +14,12 @@ import { IReplay } from '../../../src/interfaces';
 @Table
 export class Replay extends Model<IReplay> {
   @Column({
+    type: DataType.BIGINT,
     primaryKey: true,
     autoIncrement: true,
   })
   id: number;
+
   @Column({
     type: DataType.TEXT,
     allowNull: false,

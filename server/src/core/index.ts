@@ -1,1 +1,1 @@
-export * from './IdParam.dto';
+export * from './ParamPipe';

@@ -7,15 +7,14 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseIntPipe,
-  NotFoundException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto';
 import { UpdatePostDto } from './dto';
 import { JwtGuard } from '../auth/Guard';
 import { GetUser } from 'src/auth/decorator';
+import { ParamPipe } from '../core';
+
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -25,9 +24,7 @@ export class PostController {
     @Body() createPostDto: CreatePostDto,
     @GetUser() userId: number,
   ) {
-    await this.postService.create(createPostDto, userId);
-
-    return { message: 'Post created successfully' };
+    return await this.postService.create(createPostDto, userId);
   }
 
   @Get()
@@ -35,44 +32,30 @@ export class PostController {
     return await this.postService.getRandomPosts();
   }
 
-  @UseGuards(JwtGuard)
-  @Get('myPosts/')
-  async getUserPosts(@GetUser() userId: number) {
-    return await this.postService.getUserPosts(userId);
-  }
+  // @UseGuards(JwtGuard)
+  // @Get('myPosts/')
+  // async getUserPosts(@GetUser() userId: number) {
+  //   return await this.postService.getUserPosts(userId);
+  // }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    const post = await this.postService.findOne(id);
-    if (!post) throw new NotFoundException('This post does not exist anymore');
-    return post;
+  async findOne(@Param('id', ParamPipe) id: number) {
+    return await this.postService.findOne(id);
   }
 
   @UseGuards(JwtGuard)
   @Patch(':id')
   async update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: number,
     @Body() updatePostDto: UpdatePostDto,
     @GetUser() userId: number,
   ) {
-    const [affectedRows] = await this.postService.update(
-      +id,
-      updatePostDto,
-      userId,
-    );
-
-    if (!affectedRows) throw new NotFoundException();
-    return { message: 'Post updated Successfully' };
+    return await this.postService.update(+id, updatePostDto, userId);
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  async remove(
-    @Param('id', ParseIntPipe) id: number,
-    @GetUser() userId: number,
-  ) {
-    const affectedRows = await this.postService.remove(id, userId);
-    if (!affectedRows) throw new NotFoundException();
-    return { message: 'Post deleted Successfully' };
+  async remove(@Param('id') id: number, @GetUser() userId: number) {
+    return await this.postService.remove(id, userId);
   }
 }

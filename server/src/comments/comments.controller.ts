@@ -13,7 +13,7 @@ import { CommentsService } from './comments.service';
 import { JwtGuard } from '../auth/Guard';
 import { GetUser } from '../auth/decorator';
 import { CommentDto } from './dto';
-import { ParamDto } from '../core/index';
+import { ParamPipe } from 'src/core';
 
 @Controller('comments')
 export class CommentsController {
@@ -22,42 +22,38 @@ export class CommentsController {
   @UseGuards(JwtGuard)
   @Post(':postId')
   async create(
-    @Param() dto: ParamDto,
+    @Param('postId', ParamPipe) postId: number,
     @Body()
     createCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    return await this.commentsService.create(
-      createCommentDto,
-      userId,
-      dto.postId,
-    );
+    return await this.commentsService.create(createCommentDto, userId, postId);
   }
 
   // Get All comments in the post
   @Get(':postId')
-  findAll(@Param() dto: ParamDto) {
-    return this.commentsService.findAll(+dto.postId);
+  async findAll(@Param('postId', ParamPipe) postId: number) {
+    return await this.commentsService.findAll(postId);
   }
 
   @Get(':id')
-  findOne(@Param('id') dto: ParamDto) {
-    return this.commentsService.findOne(dto.id);
+  async findOne(@Param('id') id: number) {
+    return await this.commentsService.findOne(id);
   }
 
   @UseGuards(JwtGuard)
   @Patch(':id')
   async update(
-    @Param('id') dto: ParamDto,
+    @Param('id', ParamPipe) id: number,
     @Body() updateCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    return await this.commentsService.update(dto.id, updateCommentDto, userId);
+    return await this.commentsService.update(id, updateCommentDto, userId);
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  async remove(@Param('id') dto: ParamDto, @GetUser() userId: number) {
-    return await this.commentsService.remove(dto.id, userId);
+  async remove(@Param('id', ParamPipe) id: number, @GetUser() userId: number) {
+    return await this.commentsService.remove(id, userId);
   }
 }

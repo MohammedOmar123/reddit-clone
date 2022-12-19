@@ -4,7 +4,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { USER_REPOSITORY } from 'src/core/constants';
 import { LoginDto, signupDto } from './dto';
-import { MESSAGES } from '../core/constants';
+import { Messages } from '../core/constants';
 import { signupValidation, loginValidation } from './validation';
 @Injectable()
 export class AuthService {
@@ -43,14 +43,14 @@ export class AuthService {
       throw new BadRequestException(error.details[0].message);
     }
     const result = await this.checkEmail(user.email);
-    if (!result) throw new BadRequestException(MESSAGES.FAILED_LOGIN);
+    if (!result) throw new BadRequestException(Messages.FAILED_LOGIN);
 
     const isPasswordMatched = await bcrypt.compare(
       user.password,
       result.password,
     );
     if (!isPasswordMatched)
-      throw new BadRequestException(MESSAGES.FAILED_LOGIN);
+      throw new BadRequestException(Messages.FAILED_LOGIN);
 
     return this.createToken(result.id, result.email);
   }

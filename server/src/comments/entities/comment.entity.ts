@@ -14,6 +14,7 @@ import { Replay } from '../../replies/entities';
 @Table
 export class Comment extends Model<IComment> {
   @Column({
+    type: DataType.BIGINT,
     primaryKey: true,
     autoIncrement: true,
   })
