@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Vote } from './entities';
 import { PostService } from '../post/post.service';
 import { VOTE_REPOSITORY } from 'src/core/constants';
@@ -10,22 +10,34 @@ export class VoteService {
     private postService: PostService,
   ) {}
 
-  async create(postId: number, userId: number) {
-    const post = await this.postService.findOne(postId);
-    if (!post) throw new NotFoundException();
-    return await this.voteRepository.upsert({
+  async create(postId: number, userId: number, vote: number) {
+    this.postService.checkPostExist(postId);
+    const existingVote = await this.voteRepository.findOne({
+      where: { postId, userId },
+    });
+
+    if (existingVote?.vote === vote) {
+      console.log('are you here');
+      return await this.remove(postId, userId);
+    }
+
+    await this.voteRepository.upsert({
       postId,
       userId,
+      vote,
     });
+    return this.findVotesCount(postId);
   }
 
-  async findLikesCount(postId: number) {
-    return this.voteRepository.count({
+  async findVotesCount(postId: number) {
+    const voteCount = await this.voteRepository.sum('vote', {
       where: { postId },
     });
+    return { votes: voteCount || 0 };
   }
 
   async remove(postId: number, userId: number) {
-    return this.voteRepository.destroy({ where: { postId, userId } });
+    await this.voteRepository.destroy({ where: { postId, userId } });
+    return this.findVotesCount(postId);
   }
 }
