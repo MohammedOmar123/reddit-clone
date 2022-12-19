@@ -43,6 +43,7 @@ export interface IVote
   extends Model<InferAttributes<IVote>, InferCreationAttributes<IVote>> {
   userId: ForeignKey<IUser['id']>;
   postId: ForeignKey<IPost['id']>;
+  vote: number;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;
 }

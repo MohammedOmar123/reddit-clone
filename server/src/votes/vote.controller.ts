@@ -3,40 +3,40 @@ import {
   Get,
   Post,
   Param,
+  Body,
   Delete,
   UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { VoteService } from './vote.service';
 import { JwtGuard } from '../auth/Guard';
 import { GetUser } from 'src/auth/decorator';
-
-@Controller('likes')
+import { ParamPipe } from 'src/core';
+@Controller('votes')
 export class VoteController {
   constructor(private readonly voteService: VoteService) {}
 
   @UseGuards(JwtGuard)
   @Post(':postId')
   async create(
-    @Param('postId', ParseIntPipe) postId: number,
+    @Param('postId', ParamPipe) postId: number,
     @GetUser() userId: number,
+    @Body('vote') vote: number,
   ) {
-    await this.voteService.create(postId, userId);
-    return { message: 'like added successfully' };
+    console.log(vote);
+    return await this.voteService.create(postId, userId, +vote);
   }
 
   @Get(':postId')
-  async findLikesCount(@Param('postId', ParseIntPipe) postId: number) {
-    return { likes: await this.voteService.findLikesCount(postId) };
+  async findVotesCount(@Param('postId', ParamPipe) postId: number) {
+    return await this.voteService.findVotesCount(postId);
   }
 
   @UseGuards(JwtGuard)
   @Delete(':postId')
   async remove(
-    @Param('postId', ParseIntPipe) postId: string,
+    @Param('postId', ParamPipe) postId: string,
     @GetUser() userId: number,
   ) {
-    await this.voteService.remove(+postId, userId);
-    return { message: 'Like deleted successfully' };
+    return await this.voteService.remove(+postId, userId);
   }
 }
