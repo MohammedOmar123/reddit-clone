@@ -1,9 +1,15 @@
-import { Injectable, Inject, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  ForbiddenException,
+  BadRequestException,
+} from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { CreatePostDto, UpdatePostDto } from './dto';
 import { Post } from './entities';
 import { User } from '../auth/entity';
-import { POST_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
+import { POST_REPOSITORY, USER_REPOSITORY, Messages } from 'src/core/constants';
+import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PostService {
@@ -17,42 +23,22 @@ export class PostService {
 
     // Get the difference time between the first and the fifth post
     if (userPosts.length > 4 && !this.getDiffTime(userPosts[4].createdAt))
-      throw new ForbiddenException(
-        'You can just add 5 posts per day, Please try again in 24 hours',
-      );
+      throw new ForbiddenException(Messages.FORBIDDEN_POST);
 
     const { title, content, image } = createPostDto;
-
-    return await this.postRepository.create({
-      title,
-      content,
-      image,
-      userId,
-    });
-  }
-
-  async getRandomPosts() {
-    return this.postRepository.findAll({
-      attributes: { exclude: ['updatedAt'] },
-      order: Sequelize.literal('random()'),
-      limit: 100,
-      include: {
-        model: this.userRepository,
-        attributes: ['id', 'username', 'image'],
-        required: true,
-      },
-    });
-  }
-
-  async getUserPosts(userId: number) {
-    return this.postRepository.findAll({
-      attributes: {
-        exclude: ['updatedAt'],
-      },
-      where: { userId },
-      order: [['createdAt', 'DESC']],
-      limit: 5,
-    });
+    try {
+      const post = await this.postRepository.create({
+        title,
+        content,
+        image,
+        userId,
+      });
+      return { message: Messages.SUCCESS_ADD, post };
+    } catch (error) {
+      if (error.name === 'SequelizeForeignKeyConstraintError') {
+        throw new BadRequestException('This account is not valid');
+      }
+    }
   }
 
   getDiffTime(createdAt: Date): boolean {
@@ -64,8 +50,34 @@ export class PostService {
     return true;
   }
 
+  async getRandomPosts() {
+    const posts = this.postRepository.findAll({
+      attributes: { exclude: ['updatedAt'] },
+      order: Sequelize.literal('random()'),
+      limit: 100,
+      include: {
+        model: this.userRepository,
+        attributes: ['id', 'username', 'image'],
+        required: true,
+      },
+    });
+    return posts;
+  }
+
+  async getUserPosts(userId: number) {
+    const userPosts = this.postRepository.findAll({
+      attributes: {
+        exclude: ['updatedAt'],
+      },
+      where: { userId },
+      order: [['createdAt', 'DESC']],
+      limit: 5,
+    });
+    return userPosts;
+  }
+
   async findOne(id: number) {
-    return this.postRepository.findOne({
+    const post = this.postRepository.findOne({
       attributes: { exclude: ['updatedAt'] },
       where: { id },
       include: {
@@ -74,19 +86,29 @@ export class PostService {
         required: true,
       },
     });
+    return post;
+  }
+
+  async checkPostExist(id: number) {
+    const post = await this.postRepository.findByPk(id);
+    if (!post) throw new NotFoundException('this post does not exist anymore');
   }
 
   async update(id: number, updatePostDto: UpdatePostDto, userId: number) {
     const { title, image, content } = updatePostDto;
-    return this.postRepository.update(
+    const [affectedRows] = await this.postRepository.update(
       { title, content, image },
       { where: { id, userId } },
     );
+    if (!affectedRows) throw new BadRequestException(Messages.FAILED_DELETED);
+    return { message: Messages.SUCCESS_UPDATED };
   }
 
   async remove(id: number, userId: number) {
-    return this.postRepository.destroy({
+    const affectedRows = await this.postRepository.destroy({
       where: { id, userId },
     });
+    if (!affectedRows) throw new BadRequestException(Messages.FAILED_DELETED);
+    return { message: Messages.SUCCESS_DELETED };
   }
 }

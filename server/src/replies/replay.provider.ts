@@ -1,8 +1,9 @@
 import { Replay } from './entities';
+import { REPLAY_REPOSITORY } from '../core/constants';
 
 export const replayProvider = [
   {
-    provide: 'Replay_REPOSITORY',
+    provide: REPLAY_REPOSITORY,
     useValue: Replay,
   },
 ];

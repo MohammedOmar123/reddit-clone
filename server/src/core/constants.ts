@@ -4,7 +4,7 @@ export const COMMENT_REPOSITORY = 'COMMENT_REPOSITORY';
 export const VOTE_REPOSITORY = 'LIKE_REPOSITORY';
 export const REPLAY_REPOSITORY = 'REPLAY_REPOSITORY';
 export const SEQUELIZE = 'SEQUELIZE';
-export enum MESSAGES {
+export enum Messages {
   SUCCESS_ADD = 'Added Successfully',
   FAILED_ADD = 'Deleted Successfully',
   SUCCESS_UPDATED = 'Updated Successfully',
@@ -12,4 +12,5 @@ export enum MESSAGES {
   SUCCESS_DELETED = 'Deleted Successfully',
   FAILED_DELETED = 'Deleted Failed',
   FAILED_LOGIN = 'Incorrect username or password',
+  FORBIDDEN_POST = 'You can just add 5 posts per day, Please try again in 24 hours',
 }

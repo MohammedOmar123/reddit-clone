@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { CreateReplyDto } from './dto';
-import { UpdateReplyDto } from './dto';
+import { CreateReplyDto, UpdateReplyDto } from './dto';
 import { Replay } from './entities/';
+import { REPLAY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
 import { CommentsService } from '../comments/comments.service';
 import { User } from '../auth/entity';
 import { Op } from 'sequelize';
@@ -9,9 +9,9 @@ import { Op } from 'sequelize';
 @Injectable()
 export class RepliesService {
   constructor(
-    @Inject('Replay_REPOSITORY')
+    @Inject(REPLAY_REPOSITORY)
     private replayRepository: typeof Replay,
-    @Inject('USER_REPOSITORY') private userRepository: typeof User,
+    @Inject(USER_REPOSITORY) private userRepository: typeof User,
     private commentService: CommentsService,
   ) {}
 

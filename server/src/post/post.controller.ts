@@ -13,6 +13,8 @@ import { CreatePostDto } from './dto';
 import { UpdatePostDto } from './dto';
 import { JwtGuard } from '../auth/Guard';
 import { GetUser } from 'src/auth/decorator';
+import { ParamPipe } from '../core';
+
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -37,7 +39,7 @@ export class PostController {
   // }
 
   @Get(':id')
-  async findOne(@Param() id: number) {
+  async findOne(@Param('id', ParamPipe) id: number) {
     return await this.postService.findOne(id);
   }
 

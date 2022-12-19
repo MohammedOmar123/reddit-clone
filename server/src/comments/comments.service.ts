@@ -1,10 +1,15 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CommentDto } from './dto';
 import { Comment } from './entities/';
 import { User } from '../auth/entity';
 import { PostService } from '../post/post.service';
 import { COMMENT_REPOSITORY } from 'src/core/constants';
-import { USER_REPOSITORY, MESSAGES } from '../core/constants';
+import { USER_REPOSITORY, Messages } from '../core/constants';
 @Injectable()
 export class CommentsService {
   constructor(
@@ -15,17 +20,23 @@ export class CommentsService {
 
   async create(createCommentDto: CommentDto, userId: number, postId: number) {
     const { content } = createCommentDto;
-    const post = await this.postService.findOne(postId);
-    if (!post) throw new NotFoundException();
-    const data = await this.commentRepository.create(
-      {
-        content,
-        postId,
-        userId,
-      },
-      { returning: true },
-    );
-    return { message: MESSAGES.SUCCESS_ADD, data };
+    await this.postService.checkPostExist(postId);
+
+    try {
+      const comment = await this.commentRepository.create(
+        {
+          content,
+          postId,
+          userId,
+        },
+        { returning: true },
+      );
+      return { message: Messages.SUCCESS_ADD, comment };
+    } catch (error) {
+      if (error.name === 'SequelizeForeignKeyConstraintError') {
+        throw new BadRequestException('This account is not valid');
+      }
+    }
   }
 
   async findAll(postId: number) {
@@ -60,7 +71,7 @@ export class CommentsService {
       { where: { id, userId }, returning: ['content'] },
     );
     if (!affectedRows) throw new NotFoundException();
-    return { message: MESSAGES.SUCCESS_UPDATED, comment };
+    return { message: Messages.SUCCESS_UPDATED, comment };
   }
 
   async remove(id: number, userId: number) {
@@ -68,6 +79,6 @@ export class CommentsService {
       where: { id, userId },
     });
     if (!affectedRows) throw new NotFoundException();
-    return { message: MESSAGES.SUCCESS_DELETED };
+    return { message: Messages.SUCCESS_DELETED };
   }
 }
