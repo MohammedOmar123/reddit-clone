@@ -1,7 +1,8 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsIn, IsInt, IsNotIn } from 'class-validator';
 
 export class CreateVoteDto {
-  @IsNotEmpty()
-  @IsNumber()
-  vote: number;
+  @Type(() => Number)
+  @IsIn([1, -1])
+  value: string;
 }

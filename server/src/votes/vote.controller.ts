@@ -11,6 +11,7 @@ import { VoteService } from './vote.service';
 import { JwtGuard } from '../auth/Guard';
 import { GetUser } from 'src/auth/decorator';
 import { ParamPipe } from 'src/core';
+import { CreateVoteDto } from './dto/createVote.dto';
 @Controller('votes')
 export class VoteController {
   constructor(private readonly voteService: VoteService) {}
@@ -20,10 +21,9 @@ export class VoteController {
   async create(
     @Param('postId', ParamPipe) postId: number,
     @GetUser() userId: number,
-    @Body('vote') vote: number,
+    @Body('vote') vote: CreateVoteDto,
   ) {
-    console.log(vote);
-    return await this.voteService.create(postId, userId, +vote);
+    return await this.voteService.create(postId, userId, +vote.value);
   }
 
   @Get(':postId')
