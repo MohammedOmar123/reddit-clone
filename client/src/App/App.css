@@ -3,6 +3,11 @@
   padding: 0;
   box-sizing: 0;
 }
+
+input:-webkit-autofill { 
+  -webkit-background-clip: text;
+}
+
 .App {
   text-align: center;
 }

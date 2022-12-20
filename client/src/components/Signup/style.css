@@ -1,5 +1,4 @@
-.signup-container {
-  display: flex;
+.signup-container {  display: flex;
   gap: 30px;
 }
 .account-image {
@@ -18,15 +17,31 @@
 
 .signup-container form h1 {
   font-size: 18px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   text-align: start;
   width: 100%;
 }
+
 .signup-container form p {
   font-size: 12px;
   text-align: start;
   width: 100%;
+  margin-top: 20px;
 }
+
+.signup-box {
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+}
+
+.signup-boxInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 form .link-login {
   text-decoration: none;
   text-transform: uppercase;
@@ -35,7 +50,7 @@ form .link-login {
   font-weight: bold;
 }
 .signup-error {
-  color: red; 
+  color: red;
   font-family: Arial;
   font-size: 12px;
 }
