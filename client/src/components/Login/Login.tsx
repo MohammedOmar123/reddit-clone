@@ -8,13 +8,16 @@ import { useFormik } from 'formik';
 
 import { ApiService, JwtService } from '../../services';
 import { loginValidation } from '../../validations';
+import Loading from '../Loading/Loading';
 import image from '../../assets/accountImage.png';
 import './style.css';
 
 const Login: FC = () => {
-  const fontSize = '15px';
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const fontSize = '15px';
 
   const formik = useFormik({
     initialValues: {
@@ -24,10 +27,12 @@ const Login: FC = () => {
     validationSchema: loginValidation,
     onSubmit: async (values) => {
       try {
+        setIsLoading(true);
         const response = await ApiService.post('/api/v1/auth/login', values);
         JwtService.setToken(response.data.accessToken);
         setError('');
         navigate('/');
+        setIsLoading(false);
       } catch (err: any) {
         setError(err.response.data.message);
       }
@@ -91,6 +96,7 @@ const Login: FC = () => {
             <Link to="/signup" className="link-signup">Sign up</Link>
           </p>
         </Box>
+        { isLoading && <Loading /> }
       </form>
     </Box>
   );
