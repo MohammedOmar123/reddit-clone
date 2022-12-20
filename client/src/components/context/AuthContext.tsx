@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }:IChildrenProps):JSX.Element => 
     try {
       const response = await ApiService.get('/api/v1/users/me');
       setUser(response.data.data);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
     }
   };
