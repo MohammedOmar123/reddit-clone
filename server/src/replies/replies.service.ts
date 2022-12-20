@@ -1,10 +1,11 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { CreateReplyDto, UpdateReplyDto } from './dto';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { CreateReplyDto } from './dto';
 import { Replay } from './entities/';
+import { User } from '../auth/entity';
 import { REPLAY_REPOSITORY, USER_REPOSITORY } from 'src/core/constants';
 import { CommentsService } from '../comments/comments.service';
-import { User } from '../auth/entity';
 import { Op } from 'sequelize';
+import { Messages } from '../core/constants';
 
 @Injectable()
 export class RepliesService {
@@ -17,26 +18,25 @@ export class RepliesService {
 
   async create(createReplyDto: CreateReplyDto, userId: number) {
     const { commentId, replayId, content } = createReplyDto;
-    if (!commentId && !replayId) throw new Error('400');
+
     // check the comment and the replay if they are still exist
     if (replayId) {
       const replay = await this.findOne(replayId);
-      if (!replay) throw new Error('404');
-    } else {
-      const comment = await this.commentService.findOneById(commentId);
-      if (!comment) throw new Error('404');
+      if (!replay) throw new NotFoundException();
     }
+    if (commentId) await this.commentService.checkCommentExists(commentId);
 
-    return await this.replayRepository.create({
+    const replay = await this.replayRepository.create({
       userId,
       content,
       commentId,
       replayId,
     });
+    return { replay, message: Messages.SUCCESS_ADD };
   }
 
   async findAllReplies(CommRepId: number) {
-    return this.replayRepository.findAll({
+    const replies = await this.replayRepository.findAll({
       attributes: { exclude: ['updatedAt', 'replayId'] },
       where: {
         [Op.or]: [
@@ -50,31 +50,37 @@ export class RepliesService {
       },
       include: {
         model: this.userRepository,
-        attributes: ['id', 'username'],
+        attributes: ['username', 'image'],
       },
       order: [['createdAt', 'DESC']],
     });
+    return replies;
   }
 
   async findOne(id: number) {
-    return this.replayRepository.findByPk(id);
+    const replay = this.replayRepository.findByPk(id);
+    return replay;
   }
 
-  async update(id: number, updateReplyDto: UpdateReplyDto, userId: number) {
-    const { content } = updateReplyDto;
-    return this.replayRepository.update(
+  async update(id: number, content: string, userId: number) {
+    const [affectedRows, [replay]] = await this.replayRepository.update(
       {
         content,
       },
       {
         where: { id, userId },
+        returning: true,
       },
     );
+    if (!affectedRows) throw new NotFoundException();
+    return { message: Messages.SUCCESS_UPDATED, replay };
   }
 
   async remove(id: number, userId: number) {
-    return this.replayRepository.destroy({
+    const affectedRows = this.replayRepository.destroy({
       where: { id, userId },
     });
+    if (!affectedRows) throw new NotFoundException();
+    return { message: Messages.SUCCESS_UPDATED };
   }
 }

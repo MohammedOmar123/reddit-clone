@@ -32,11 +32,11 @@ export class PostController {
     return await this.postService.getRandomPosts();
   }
 
-  // @UseGuards(JwtGuard)
-  // @Get('myPosts/')
-  // async getUserPosts(@GetUser() userId: number) {
-  //   return await this.postService.getUserPosts(userId);
-  // }
+  @UseGuards(JwtGuard)
+  @Get('myPosts')
+  async getUserPosts(@GetUser() userId: number) {
+    return await this.postService.getUserPosts(userId);
+  }
 
   @Get(':id')
   async findOne(@Param('id', ParamPipe) id: number) {

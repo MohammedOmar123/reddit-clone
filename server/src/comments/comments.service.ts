@@ -59,8 +59,9 @@ export class CommentsService {
     return comment;
   }
 
-  async findOneById(id: number) {
+  async checkCommentExists(id: number) {
     const comment = await this.commentRepository.findByPk(id);
+    if (!comment) throw new NotFoundException('Comment not found');
     return comment;
   }
 
