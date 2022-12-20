@@ -34,3 +34,8 @@ form .link-login {
   color: #0079d3;
   font-weight: bold;
 }
+.signup-error {
+  color: red; 
+  font-family: Arial;
+  font-size: 12px;
+}

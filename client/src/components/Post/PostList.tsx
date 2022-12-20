@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { Stack, Box } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
 import CreatePostLabel from '../CreatePostLabel/CreatePostLabel';
 import TopPost from '../TopPost/TopPost';
+import 'react-toastify/dist/ReactToastify.css';
 import Post from './Post';
 import './style.css';
 
@@ -13,6 +15,7 @@ const PostList: FC = () => (
     // border: '2px solid black',
   }}
   >
+    <ToastContainer />
     <Box
       style={{
         backgroundColor: '#DAE0E6',
