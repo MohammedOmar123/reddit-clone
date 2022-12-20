@@ -1,3 +1,4 @@
-import SignupValidation from './SignupValidation';
+import signupValidation from './SignupValidation';
+import loginValidation from './loginValidation';
 
-export { SignupValidation };
+export { signupValidation, loginValidation };

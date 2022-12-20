@@ -1,49 +1,98 @@
-import { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { FC, useState } from 'react';
+
+import { Link, useNavigate } from 'react-router-dom';
 import {
   TextField, Button, Typography, Box,
 } from '@mui/material';
+import { useFormik } from 'formik';
 
+import { ApiService } from '../../services/ApiServices';
+import { loginValidation } from '../../validations';
 import image from '../../assets/accountImage.png';
 import './style.css';
 
-const Login: FC = () => (
-  <Box className="login-container">
-    <img className="account-image" src={image} alt="signup" />
-    <form>
-      <Box>
-        <Typography
-          variant="h1"
-          className="login-title"
-          sx={{
-            fontSize: '18px',
-          }}
-        >
-          Log in
-        </Typography>
-        <Typography
-          variant="subtitle2"
-          sx={{
-            fontSize: '11px',
-            marginTop: '10px',
-          }}
-        >
-          By continuing, you agree to our User Agreement and Privacy Policy.
-        </Typography>
+const Login: FC = () => {
+  const fontSize = '15px';
+  const [error, setError] = useState<string>('');
+  const navigate = useNavigate();
 
-      </Box>
-      <Box className="fields">
-        <TextField variant="outlined" label="Email" size="small" fullWidth />
-        <TextField variant="outlined" label="Password" size="small" fullWidth />
-        <Button variant="contained" size="small" fullWidth>Login</Button>
-        <p>
-          Already a redditor ?
-          {' '}
-          <Link to="/signup" className="link-signup">Sign up</Link>
-        </p>
-      </Box>
-    </form>
-  </Box>
-);
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: loginValidation,
+    onSubmit: async (values) => {
+      try {
+        await ApiService.post('/api/v1/auth/login', values);
+        setError('');
+        navigate('/');
+      } catch (err: any) {
+        setError(err.response.data.message);
+      }
+    },
+  });
+
+  return (
+    <Box className="login-container">
+      <img className="account-image" src={image} alt="signup" />
+      <form onSubmit={(e): void => {
+        e.preventDefault();
+        formik.handleSubmit();
+      }}
+      >
+        <Box>
+          <h1 className="login-title">
+            Log in
+          </h1>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontSize: '11px',
+              marginTop: '10px',
+            }}
+          >
+            By continuing, you agree to our User Agreement and Privacy Policy.
+          </Typography>
+
+        </Box>
+        <Box className="fields">
+          <TextField
+            id="email"
+            name="email"
+            label="Email"
+            variant="outlined"
+            size="small"
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            fullWidth
+            InputLabelProps={{ style: { fontSize } }}
+          />
+          <TextField
+            id="password"
+            name="password"
+            label="Password"
+            variant="outlined"
+            size="small"
+            type="password"
+            fullWidth
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            InputLabelProps={{ style: { fontSize } }}
+          />
+          <Button type="submit" variant="contained" size="small" fullWidth>Login</Button>
+          { error && <p className="signup-error">{error}</p> }
+          <p className="login-noAccount">
+            Already a redditor ?
+            {' '}
+            <Link to="/signup" className="link-signup">Sign up</Link>
+          </p>
+        </Box>
+      </form>
+    </Box>
+  );
+};
 
 export default Login;
