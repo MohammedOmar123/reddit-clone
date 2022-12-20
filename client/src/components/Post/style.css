@@ -1,8 +1,27 @@
+.home {  
+  background-color: #dae0e6;
+  display: flex;
+  justify-content: center;
+}
+
+.post-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 300px;
+}
+
+.post-list {
+  margin: auto;
+  margin-top: 20px;
+  width: 600px;
+}
+
 .single-post {
   display: flex;
-  border:1px solid silver;
-/* border: 2px saddlebrown solid; */
+  border: 1px solid silver;
 }
+
 /* Vote section */
 .vote-container {
   display: flex;

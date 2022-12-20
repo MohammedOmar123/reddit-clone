@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Box } from '@mui/material';
+
 import banner from '../../assets/banner.png';
 import trendsImg from '../../assets/trends.png';
 import './style.css';
