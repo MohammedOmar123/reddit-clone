@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 import { FC } from 'react';
+
 import { Box, Avatar } from '@mui/material';
-import './style.css';
+
 import downFilled from '../../assets/down-filled.png';
 import upOutline from '../../assets/outline-up.png';
 import imageTest from '../../assets/real.jpg';
+import './style.css';
 
 const Post: FC = () => (
   <Box className="single-post">

@@ -12,10 +12,7 @@ const TopPost:FC = () => (
   <Box className="top-post-container">
     <Trends />
     <List
-      sx={{
-        maxWidth: 300,
-        bgcolor: 'background.paper',
-      }}
+      sx={{ maxWidth: 300, bgcolor: 'background.paper' }}
       className="top-posts-list"
     >
       <ListItem alignItems="flex-start">
@@ -37,7 +34,6 @@ const TopPost:FC = () => (
               <p style={{ display: 'inline' }}>
                 {" I'll be in your neighborhood doing errands this…"}
               </p>
-
             </>
             )}
         />
@@ -45,10 +41,7 @@ const TopPost:FC = () => (
       <Divider
         variant="inset"
         component="li"
-        style={{
-          width: '100%',
-          marginLeft: '0px',
-        }}
+        style={{ width: '100%', marginLeft: '0px' }}
       />
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
@@ -67,11 +60,8 @@ const TopPost:FC = () => (
                 Ali Connors-
               </Typography>
               <p style={{ display: 'inline' }}>
-                {' '}
                 {" I'll be in your neighborhood doing errands this…"}
-
               </p>
-
             </>
             )}
         />
@@ -79,10 +69,7 @@ const TopPost:FC = () => (
       <Divider
         variant="inset"
         component="li"
-        style={{
-          width: '100%',
-          marginLeft: '0px',
-        }}
+        style={{ width: '100%', marginLeft: '0px' }}
       />
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
@@ -103,9 +90,7 @@ const TopPost:FC = () => (
               <p style={{ display: 'inline' }}>
                 {' '}
                 {" I'll be in your neighborhood doing errands this…"}
-
               </p>
-
             </>
             )}
         />

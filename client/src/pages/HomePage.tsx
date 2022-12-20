@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import PostList from '../components/Post/PostList';
+import Home from '../components/Post/Home';
 
 const HomePage: FC = () => (
   <div>
-    <PostList />
+    <Home />
   </div>
 );
 
