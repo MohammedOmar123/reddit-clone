@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { useFormik } from 'formik';
 
-import { ApiService } from '../../services/ApiServices';
+import { ApiService, JwtService } from '../../services';
 import { loginValidation } from '../../validations';
 import image from '../../assets/accountImage.png';
 import './style.css';
@@ -24,7 +24,8 @@ const Login: FC = () => {
     validationSchema: loginValidation,
     onSubmit: async (values) => {
       try {
-        await ApiService.post('/api/v1/auth/login', values);
+        const response = await ApiService.post('/api/v1/auth/login', values);
+        JwtService.setToken(response.data.accessToken);
         setError('');
         navigate('/');
       } catch (err: any) {
