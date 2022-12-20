@@ -12,11 +12,13 @@ import { toast } from 'react-toastify';
 
 import { signupValidation } from '../../validations';
 import { ApiService, JwtService } from '../../services';
+import Loading from '../Loading/Loading';
 import image from '../../assets/accountImage.png';
 import './style.css';
 
 const Signup:FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
 
@@ -37,9 +39,11 @@ const Signup:FC = () => {
     validationSchema: signupValidation,
     onSubmit: async (values) => {
       try {
+        setIsLoading(true);
         const responses = await ApiService.post('/api/v1/auth/signup', values);
         JwtService.setToken(responses.data.accessToken);
         setError('');
+        setIsLoading(false);
         navigate('/');
         toast.success(
           'Your account has been created successfully',
@@ -155,6 +159,7 @@ const Signup:FC = () => {
           {' '}
           <Link to="/login" className="link-login">Log In</Link>
         </p>
+        { isLoading && <Loading />}
       </form>
     </Box>
 

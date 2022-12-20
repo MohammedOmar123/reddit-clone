@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Home from '../components/Post/Home';
+import { Home } from '../components';
 
 const HomePage: FC = () => (
   <div>
