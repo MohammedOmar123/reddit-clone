@@ -10,7 +10,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
-import { SignupValidation } from '../../validations';
+import { signupValidation } from '../../validations';
 import { ApiService } from '../../services/ApiServices';
 import image from '../../assets/accountImage.png';
 import './style.css';
@@ -34,7 +34,7 @@ const Signup:FC = () => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: SignupValidation,
+    validationSchema: signupValidation,
     onSubmit: async (values) => {
       try {
         await ApiService.post('/api/v1/auth/signup', values);

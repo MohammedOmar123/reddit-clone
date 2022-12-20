@@ -9,9 +9,17 @@
   align-items: center;
   margin-bottom: 50px;
   margin-top: 120px;
-  gap: 60px;
+  gap: 90px;
   width: 18%;
 }
+
+.login-title {
+  font-size: 18px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande","Lucida Sans", Arial, sans-serif;
+  text-align: start;
+  width: 100%;
+}
+
 .fields {
   width: 100%;
   display: flex;
@@ -26,4 +34,9 @@ form .link-signup {
   font-size: 13px;
   color: #0079d3;
   font-weight: bold;
+}
+
+.login-noAccount {
+  width: 100%;
+  font-size: 12px;
 }

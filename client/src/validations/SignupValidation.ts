@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-const SignupValidation = yup.object({
+const signupValidation = yup.object({
   username: yup.string().max(21).min(4).required(),
   email: yup.string().email().required(),
   password: yup.string().max(21).min(5).required(),
@@ -8,4 +8,4 @@ const SignupValidation = yup.object({
     .oneOf([yup.ref('password'), null], 'Password must be match'),
 });
 
-export default SignupValidation;
+export default signupValidation;
