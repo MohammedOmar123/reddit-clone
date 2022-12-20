@@ -21,7 +21,7 @@ export class VoteController {
   async create(
     @Param('postId', ParamPipe) postId: number,
     @GetUser() userId: number,
-    @Body('vote') vote: CreateVoteDto,
+    @Body() vote: CreateVoteDto,
   ) {
     return await this.voteService.create(postId, userId, +vote.value);
   }

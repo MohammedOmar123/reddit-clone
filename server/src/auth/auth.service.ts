@@ -5,7 +5,6 @@ import { JwtService } from '@nestjs/jwt';
 import { USER_REPOSITORY } from 'src/core/constants';
 import { LoginDto, signupDto } from './dto';
 import { Messages } from '../core/constants';
-import { signupValidation, loginValidation } from './validation';
 @Injectable()
 export class AuthService {
   constructor(
@@ -14,22 +13,26 @@ export class AuthService {
   ) {}
 
   async signup(user: signupDto): Promise<{ accessToken: string }> {
-    try {
-      await signupValidation(user);
-    } catch (error) {
-      throw new BadRequestException(error.details[0].message);
+    const { password, confirmPassword, email, username } = user;
+    if (password !== confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
     }
 
-    const isEmailExist = await this.checkEmail(user.email);
+    const isEmailExist = await this.checkEmail(email);
     if (isEmailExist)
       throw new BadRequestException('This email is already used');
 
-    await this.checkUsername(user.username);
+    const isUsernameExist = await this.userRepository.findOne({
+      where: { username },
+    });
+    if (isUsernameExist)
+      throw new BadRequestException('Username is already taken');
 
     const hash = await bcrypt.hash(user.password, 10);
 
     const result = await this.userRepository.create<User>({
-      ...user,
+      email,
+      username,
       password: hash,
     });
 
@@ -37,11 +40,6 @@ export class AuthService {
   }
 
   async login(user: LoginDto): Promise<{ accessToken: string }> {
-    try {
-      await loginValidation(user);
-    } catch (error) {
-      throw new BadRequestException(error.details[0].message);
-    }
     const result = await this.checkEmail(user.email);
     if (!result) throw new BadRequestException(Messages.FAILED_LOGIN);
 
@@ -62,13 +60,6 @@ export class AuthService {
       where: { email },
     });
     return user;
-  }
-
-  async checkUsername(username: string): Promise<void> {
-    const user = await this.userRepository.findOne({
-      where: { username },
-    });
-    if (user) throw new BadRequestException('Username is already exist');
   }
 
   async createToken(

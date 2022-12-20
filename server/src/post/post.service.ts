@@ -26,19 +26,14 @@ export class PostService {
       throw new ForbiddenException(Messages.FORBIDDEN_POST);
 
     const { title, content, image } = createPostDto;
-    try {
-      const post = await this.postRepository.create({
-        title,
-        content,
-        image,
-        userId,
-      });
-      return { message: Messages.SUCCESS_ADD, post };
-    } catch (error) {
-      if (error.name === 'SequelizeForeignKeyConstraintError') {
-        throw new BadRequestException('This account is not valid');
-      }
-    }
+
+    const post = await this.postRepository.create({
+      title,
+      content,
+      image,
+      userId,
+    });
+    return { message: Messages.SUCCESS_ADD, post };
   }
 
   getDiffTime(createdAt: Date): boolean {
