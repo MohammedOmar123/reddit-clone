@@ -22,7 +22,7 @@ const TopPost:FC = () => (
         <ListItemText
           primary="Brunch this weekend?"
           secondary={(
-            <>
+            <Box>
               <Typography
                 sx={{ display: 'inline' }}
                 component="span"
@@ -31,10 +31,10 @@ const TopPost:FC = () => (
               >
                 Ali Connors-
               </Typography>
-              <p style={{ display: 'inline' }}>
+              <Typography style={{ display: 'inline' }}>
                 {" I'll be in your neighborhood doing errands this…"}
-              </p>
-            </>
+              </Typography>
+            </Box>
             )}
         />
       </ListItem>
@@ -50,7 +50,7 @@ const TopPost:FC = () => (
         <ListItemText
           primary="Brunch this weekend?"
           secondary={(
-            <>
+            <Box>
               <Typography
                 sx={{ display: 'inline' }}
                 component="span"
@@ -59,10 +59,10 @@ const TopPost:FC = () => (
               >
                 Ali Connors-
               </Typography>
-              <p style={{ display: 'inline' }}>
+              <Typography style={{ display: 'inline' }}>
                 {" I'll be in your neighborhood doing errands this…"}
-              </p>
-            </>
+              </Typography>
+            </Box>
             )}
         />
       </ListItem>
@@ -78,7 +78,7 @@ const TopPost:FC = () => (
         <ListItemText
           primary="Brunch this weekend?"
           secondary={(
-            <>
+            <Box>
               <Typography
                 sx={{ display: 'inline' }}
                 component="span"
@@ -87,11 +87,11 @@ const TopPost:FC = () => (
               >
                 Ali Connors-
               </Typography>
-              <p style={{ display: 'inline' }}>
+              <Typography style={{ display: 'inline' }}>
                 {' '}
                 {" I'll be in your neighborhood doing errands this…"}
-              </p>
-            </>
+              </Typography>
+            </Box>
             )}
         />
       </ListItem>
@@ -110,7 +110,7 @@ const TopPost:FC = () => (
         <ListItemText
           primary="Brunch this weekend?"
           secondary={(
-            <>
+            <Box>
               <Typography
                 sx={{ display: 'inline' }}
                 component="span"
@@ -119,13 +119,11 @@ const TopPost:FC = () => (
               >
                 Ali Connors-
               </Typography>
-              <p style={{ display: 'inline' }}>
-                {' '}
+              <Typography style={{ display: 'inline' }}>
                 {" I'll be in your neighborhood doing errands this…"}
 
-              </p>
-
-            </>
+              </Typography>
+            </Box>
             )}
         />
       </ListItem>

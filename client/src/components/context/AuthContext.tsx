@@ -14,6 +14,8 @@ export const AuthContext = createContext<IAuthContext>({
   email: '',
   image: '',
   bio: '',
+  isLogged: false,
+  setIsLogged: () => {},
 });
 
 export const AuthContextProvider = ({ children }:IChildrenProps):JSX.Element => {
@@ -23,12 +25,17 @@ export const AuthContextProvider = ({ children }:IChildrenProps):JSX.Element => 
     email: '',
     image: '',
     bio: '',
+    isLogged: false,
+    setIsLogged: () => {},
+
   });
 
+  const [isLogged, setIsLogged] = useState<boolean>(false);
   const fetchUserData = async ():Promise<void> => {
     try {
       const response = await ApiService.get('/api/v1/users/me');
-      setUser(response.data.data);
+      setIsLogged(true);
+      setUser({ ...response.data, setIsLogged, isLogged });
     } catch (error: any) {
       console.log(error);
     }
