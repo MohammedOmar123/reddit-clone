@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useContext } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -7,6 +7,7 @@ import {
 import { useFormik } from 'formik';
 
 import { ApiService, JwtService } from '../../services';
+import { AuthContext } from '../context/AuthContext';
 import { loginValidation } from '../../validations';
 import Loading from '../Loading/Loading';
 import image from '../../assets/accountImage.png';
@@ -15,6 +16,7 @@ import './style.css';
 const Login: FC = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { setIsLogged } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const fontSize = '15px';
@@ -30,9 +32,10 @@ const Login: FC = () => {
         setIsLoading(true);
         const response = await ApiService.post('/api/v1/auth/login', values);
         JwtService.setToken(response.data.accessToken);
+        setIsLogged(true);
+        setIsLoading(false);
         setError('');
         navigate('/');
-        setIsLoading(false);
       } catch (err: any) {
         setError(err.response.data.message);
       }
