@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 export interface IAuthContext {
@@ -6,9 +7,6 @@ export interface IAuthContext {
   email:string;
   bio:string;
   image:string
-  isLogged:boolean;
-  // eslint-disable-next-line no-unused-vars
-  setIsLogged:(isLogged:boolean) => void;
 }
 
 export interface IChildrenProps {
