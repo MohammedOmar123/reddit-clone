@@ -3,39 +3,25 @@ import { JSX } from '@babel/types';
 import {
   useState, createContext, useEffect,
 } from 'react';
-
 import { ApiService } from '../../services/ApiServices';
 import { IAuthContext, IChildrenProps } from '../../interfaces';
 
-// set Initial value
-export const AuthContext = createContext<IAuthContext>({
-  id: '',
-  username: '',
-  email: '',
-  image: '',
-  bio: '',
-  isLogged: false,
-  setIsLogged: () => {},
-});
+export const AuthContext = createContext<IAuthContext|null>(null);
 
 export const AuthContextProvider = ({ children }:IChildrenProps):JSX.Element => {
-  const [user, setUser] = useState<IAuthContext>({
-    id: '',
-    username: '',
-    email: '',
-    image: '',
-    bio: '',
-    isLogged: false,
-    setIsLogged: () => {},
-
-  });
+  const [user, setUser] = useState<IAuthContext|null>(null);
 
   const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [id, setId] = useState<number>(0);
+
   const fetchUserData = async ():Promise<void> => {
     try {
-      const response = await ApiService.get('/api/v1/users/me');
+      const response = await ApiService.get('/users/me');
       setIsLogged(true);
-      setUser({ ...response.data, setIsLogged, isLogged });
+      setId(response.data.id);
+      setUser({
+        ...response.data, setIsLogged, isLogged, id, setId,
+      });
     } catch (error: any) {
       console.log(error);
     }

@@ -7,7 +7,6 @@ export class ApiService {
 
   public static init(): void {
     this.axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-
     this.axios.interceptors.response.use((res) => res, (err) => {
       const statusCode = err?.response?.status;
       if (statusCode >= 400 && statusCode < 500 && statusCode !== 401 && statusCode !== 400) {

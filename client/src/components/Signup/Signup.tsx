@@ -40,7 +40,7 @@ const Signup:FC = () => {
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
-        const responses = await ApiService.post('/api/v1/auth/signup', values);
+        const responses = await ApiService.post('/auth/signup', values);
         JwtService.setToken(responses.data.accessToken);
         setError('');
         setIsLoading(false);

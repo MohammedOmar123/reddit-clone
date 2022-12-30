@@ -5,12 +5,12 @@ import router from './router';
 import { ApiService } from './services/ApiServices';
 import './index.css';
 
-ApiService.init();
-ApiService.setHeader();
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
+
+ApiService.init();
+ApiService.setHeader();
 
 root.render(
   <React.StrictMode>

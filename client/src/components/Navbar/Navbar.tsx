@@ -11,6 +11,7 @@ import {
 import { Home, KeyboardArrowDown, Search } from '@mui/icons-material';
 
 import { AuthContext } from '../context/AuthContext';
+import { JwtService } from '../../services/JwtServices';
 import logo from '../../assets/logo.jpg';
 import avatar from '../../assets/avatar.png';
 import './style.css';
@@ -19,11 +20,12 @@ const Navbar:FC = () => {
   const Navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement >();
   const [open, setOpen] = useState<boolean>(false);
-  const { isLogged, id: userId } = useContext(AuthContext);
+  const user = useContext(AuthContext);
 
   const handleClose = ():void => {
     setAnchorEl(null);
     setOpen(false);
+    window.location.reload();
   };
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>):void => {
@@ -31,6 +33,9 @@ const Navbar:FC = () => {
     setOpen(true);
   };
 
+  const handleLogout = ():void => {
+    JwtService.removeToken();
+  };
 
   const buttonsStyle = {
     backgroundColor: '#d93a00',
@@ -58,9 +63,9 @@ const Navbar:FC = () => {
                 reddit
               </Typography>
             </Box>
-            { (isLogged || userId) && (
+            { user && (
             <Box className="home-box">
-              { (isLogged || userId) && <Home className="home-icon" /> }
+              { user && <Home className="home-icon" /> }
               <Typography variant="caption" className="home-caption">Home</Typography>
             </Box>
             ) }
@@ -74,7 +79,7 @@ const Navbar:FC = () => {
               <InputAdornment position="end"><Search /></InputAdornment>
           }
           />
-          { isLogged || userId ? (
+          { user ? (
             <Box className="navbar-userContainer">
               <Box className="navbar-userInfo">
                 <img src={avatar} alt="" className="navbar-userImage" />
@@ -116,7 +121,10 @@ const Navbar:FC = () => {
                 </MenuItem>
                 <Divider />
                 <MenuItem
-                  onClick={handleClose}
+                  onClick={():void => {
+                    handleClose();
+                    handleLogout();
+                  }}
                   style={{
                     justifyContent: 'center',
                     fontWeight: '700',
