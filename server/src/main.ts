@@ -9,6 +9,8 @@ async function bootstrap() {
   // pipe globally it will not work
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   // whitelist true means if the user sends unneeded inputs in the request body, ignore them.
+
+  app.enableCors();
   await app.listen(4000);
 }
 bootstrap();
