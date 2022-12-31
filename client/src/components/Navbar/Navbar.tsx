@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { FC, useContext, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +27,6 @@ const Navbar:FC = () => {
   const handleClose = ():void => {
     setAnchorEl(null);
     setOpen(false);
-    window.location.reload();
   };
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>):void => {
@@ -35,6 +36,7 @@ const Navbar:FC = () => {
 
   const handleLogout = ():void => {
     JwtService.removeToken();
+    window.location.reload();
   };
 
   const buttonsStyle = {
@@ -57,8 +59,17 @@ const Navbar:FC = () => {
       <AppBar position="static" color="transparent" className="navbar-appBar">
         <Toolbar className="navbar-toolbar">
           <Box className="title-container">
-            <Box className="logo-box">
-              <img src={logo} alt="logo" className="navbar-logo" />
+            <Box
+              className="logo-box"
+              onClick={():void => {
+                Navigate('/');
+              }}
+            >
+              <img
+                src={logo}
+                alt="logo"
+                className="navbar-logo"
+              />
               <Typography variant="h2" className="reddit">
                 reddit
               </Typography>
@@ -109,7 +120,10 @@ const Navbar:FC = () => {
                 </MenuItem>
                 <Divider />
                 <MenuItem
-                  onClick={handleClose}
+                  onClick={():void => {
+                    handleClose();
+                    Navigate('addPost');
+                  }}
                   style={{
                     justifyContent: 'center',
                     fontWeight: '700',
