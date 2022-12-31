@@ -1,7 +1,8 @@
 import { FC } from 'react';
+import { AddPost } from '../components';
 
 const AddPostPage:FC = () => (
-  <div>AddPostPage</div>
+  <AddPost />
 );
 
 export default AddPostPage;
