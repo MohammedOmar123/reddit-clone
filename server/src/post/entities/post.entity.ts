@@ -43,7 +43,7 @@ export class Post extends Model<IPost> {
   comments: Comment[];
 
   @HasMany(() => Vote)
-  likes: Vote[];
+  votes: Vote[];
 
   @ForeignKey(() => User)
   @Column

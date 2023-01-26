@@ -2,13 +2,15 @@
 import { FC } from 'react';
 
 import { Box, Avatar } from '@mui/material';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 import downFilled from '../../assets/down-filled.png';
 import upOutline from '../../assets/outline-up.png';
 import imageTest from '../../assets/real.jpg';
 import './style.css';
+import { IPostProps } from '../../interfaces/IPostProps';
 
-const Post: FC = () => (
+const Post: FC<IPostProps> = ({ user }:IPostProps) => (
   <Box className="single-post">
     <Box className="vote-container">
       <img
@@ -25,9 +27,9 @@ const Post: FC = () => (
     </Box>
     <Box className="post-content">
       <Box className="post-author">
-        <Avatar className="post-avatar" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/220px-Cristiano_Ronaldo_2018.jpg" alt="" />
+        {user?.image ? <Avatar className="post-avatar" src={user?.image} />
+          : <Avatar className="post-avatar">{user?.username[0]}</Avatar>}
         <span>Ahmed Saeed</span>
-
         <span className="post-date">5 hour ago</span>
       </Box>
       <p className="post-title">
@@ -37,8 +39,22 @@ const Post: FC = () => (
       <Box>
         <img className="post-image" src={imageTest} alt="" />
       </Box>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '4px',
+        marginBottom: '5px',
+      }}
+      >
+        <ChatBubbleOutlineIcon
+          className="commentIcon"
+        />
+        <p className="post-comments">
+          77
+          Comments
+        </p>
+      </Box>
     </Box>
   </Box>
 );
-
 export default Post;

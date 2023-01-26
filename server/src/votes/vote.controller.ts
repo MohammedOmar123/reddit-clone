@@ -23,7 +23,7 @@ export class VoteController {
     @GetUser() userId: number,
     @Body() vote: CreateVoteDto,
   ) {
-    return await this.voteService.create(postId, userId, +vote.value);
+    return await this.voteService.create(postId, userId, +vote.vote);
   }
 
   @Get(':postId')
