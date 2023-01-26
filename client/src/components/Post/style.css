@@ -15,6 +15,7 @@
   margin: auto;
   margin-top: 20px;
   width: 600px;
+  margin-bottom: 20px;
 }
 
 .single-post {
@@ -89,4 +90,18 @@
   margin-top: 5px;
   max-width: 100%;
   max-height: 80%;
+}
+
+.commentIcon {
+  color: #969899a8;
+cursor: pointer;
+}
+
+.post-comments {
+color: #969899a8;
+font-size: 12px;
+font-weight: 800;
+margin-top: 2px;
+cursor: pointer;
+
 }

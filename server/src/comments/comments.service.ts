@@ -52,6 +52,13 @@ export class CommentsService {
     return comments;
   }
 
+  async findCommentCount(postId: number) {
+    const commentCount = await this.commentRepository.count({
+      where: { postId },
+    });
+    return commentCount;
+  }
+
   async findOne(postId: number) {
     const comment = await this.commentRepository.findOne({
       where: { postId },

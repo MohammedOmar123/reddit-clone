@@ -5,5 +5,5 @@ export class CreateVoteDto {
   @Type(() => Number)
   @IsNumber()
   @IsIn([1, -1])
-  value: number;
+  vote: number;
 }
